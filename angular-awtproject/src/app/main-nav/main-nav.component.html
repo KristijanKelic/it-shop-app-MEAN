@@ -1,0 +1,74 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
+    <mat-toolbar color="primary">Menu</mat-toolbar>
+    <mat-accordion multi="true">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title><mat-icon>home</mat-icon></mat-panel-title>
+          <mat-panel-description>Home</mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-nav-list>
+          <a routerLink="/" mat-button
+            ><mat-icon color="primary">list</mat-icon> Products List</a
+          >
+          <a href="#" mat-button
+            ><mat-icon color="primary">shopping_cart</mat-icon> Shopping cart</a
+          >
+        </mat-nav-list>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title><mat-icon>person</mat-icon></mat-panel-title>
+          <mat-panel-description>User</mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-nav-list>
+          <a routerLink="/auth/login" mat-button
+            ><mat-icon color="primary">forward</mat-icon> Login</a
+          >
+        </mat-nav-list>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title><mat-icon>category</mat-icon></mat-panel-title>
+          <mat-panel-description>
+            Categories
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-nav-list>
+          <a href="#" mat-button
+            ><mat-icon color="primary">laptop</mat-icon> Laptops</a
+          >
+          <a href="#" mat-button
+            ><mat-icon color="primary">smartphone</mat-icon> Smartphones</a
+          >
+        </mat-nav-list>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+      >
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>IT shop</span>
+      <span class="spacer"></span>
+      <mat-form-field>
+        <input matInput type="text" />
+      </mat-form-field>
+      <mat-icon>search</mat-icon>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,71 @@
+<div class="grid-list">
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+  <div>
+    <h1>Log in into your account</h1>
+  </div>
+  <div>
+    <mat-vertical-stepper #stepper>
+      <mat-step [stepControl]="emailFormGroup">
+        <form [formGroup]="emailFormGroup">
+          <ng-template matStepLabel>Fill out your email</ng-template>
+          <mat-form-field>
+            <input
+              matInput
+              type="email"
+              placeholder="Email"
+              formControlName="email"
+              required
+            />
+          </mat-form-field>
+          <div>
+            <button
+              mat-button
+              matStepperNext
+              color="primary"
+              [disabled]="emailFormGroup.invalid || !emailFormGroup.value"
+            >
+              Next
+            </button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="passwordFormGroup">
+        <form [formGroup]="passwordFormGroup">
+          <ng-template matStepLabel>Fill out your password</ng-template>
+          <mat-form-field>
+            <input
+              type="password"
+              matInput
+              placeholder="Password"
+              formControlName="password"
+              required
+            />
+          </mat-form-field>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button
+              mat-button
+              matStepperNext
+              color="primary"
+              [disabled]="emailFormGroup.invalid || passwordFormGroup.invalid"
+            >
+              Next
+            </button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step>
+        <hr />
+        <ng-template matStepLabel>Done</ng-template>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-flat-button (click)="('')" color="primary">Login</button>
+        </div>
+      </mat-step>
+    </mat-vertical-stepper>
+  </div>
+  <div>
+    <h4>Don't have an account? Create one</h4>
+    <a routerLink="/auth/signup" mat-flat-button color="primary">Sign up</a>
+  </div>
+</div>

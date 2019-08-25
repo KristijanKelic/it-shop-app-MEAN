@@ -1,0 +1,14 @@
+.grid-list {
+  margin: 2rem;
+  display: grid;
+  grid-template-rows: auto auto;
+  grid-template-columns: auto auto;
+  grid-column-gap: 2rem;
+  grid-row-gap: 2rem;
+}
+
+@media only screen and (max-width: 750px) {
+  .grid-list {
+    grid-template-columns: auto;
+  }
+}

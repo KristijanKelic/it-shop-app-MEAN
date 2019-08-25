@@ -35,6 +35,7 @@ To run everything you will need to do few steps:
 * [Angular](https://angular.io/) - Javascript framework for client side applications
 * [NodeJS](https://nodejs.org/en/) - Javascript runtime environment for serverside javascript (server)
 * [npm](https://www.npmjs.com/) - Used to handle packages installations
+* [mongoDB](https://www.mongodb.com/) - MongoDB Atlas is used as a database
 
 
 
