@@ -1,0 +1,11 @@
+{
+  "name": "nodejs-awtproject",
+  "version": "1.0.0",
+  "description": "restAPI for my project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kristijan Kelic",
+  "license": "ISC"
+}
