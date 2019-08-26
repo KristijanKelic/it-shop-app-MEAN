@@ -1,0 +1,60 @@
+<div class="grid-list">
+  <div></div>
+  <div class="grid-item">
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+    <h1>Sign up</h1>
+    <form [formGroup]="form" (submit)="createUser()">
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          placeholder="Name*"
+          formControlName="name"
+        />
+        <mat-error>Name is required (min 4 characters)</mat-error>
+      </mat-form-field>
+      <mat-form-field class="form-input">
+        <input
+          matInput
+          type="text"
+          placeholder="Surname*"
+          formControlName="surname"
+        />
+        <mat-error>Surname is required (min 4 characters)</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          type="email"
+          placeholder="Email*"
+          formControlName="email"
+        />
+        <mat-error>Email is required</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          type="password"
+          placeholder="Password*"
+          formControlName="password"
+        />
+        <mat-error>Password is required (min 8 characters)</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          type="password"
+          placeholder="Repeated password*"
+          formControlName="rpassword"
+          compare="password"
+        />
+        <mat-error>Passwords don't match</mat-error>
+      </mat-form-field>
+      <br />
+      <button mat-raised-button color="primary" type="submit">
+        Sign up
+      </button>
+    </form>
+  </div>
+  <div></div>
+</div>

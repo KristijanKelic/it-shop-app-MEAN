@@ -1,0 +1,11 @@
+.grid-list {
+  display: grid;
+  grid-template-columns: 15% 70% 15%;
+  margin: 5%;
+}
+
+mat-form-field {
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+}

@@ -1,9 +1,16 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const path = require('path');
+const cors = require('cors');
 
 const productRoutes = require('./routes/product');
+const userRoutes = require('./routes/user');
 
 const app = express();
+
+process.env.MONGO_DB_PW = 'vGdsDw8E2qiXAPg6';
+process.env.JWT_SECRET = 'AWTPROJECT_2019';
 
 const normalizePort = val => {
   var port = parseInt(val, 10);
@@ -53,25 +60,26 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-// app.use(cors());
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-  );
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'GET, POST, PATCH, DELETE, OPTIONS, PUT'
-  );
-  next();
-});
+app.use(cors());
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', '*');
+//   res.setHeader(
+//     'Access-Control-Allow-Headers',
+//     'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+//   );
+//   res.setHeader(
+//     'Access-Control-Allow-Methods',
+//     'GET, POST, PATCH, DELETE, OPTIONS, PUT'
+//   );
+//   next();
+// });
 
-app.use('api/product', productRoutes);
+app.use('/api/product', productRoutes);
+app.use('/api/user', userRoutes);
 
 mongoose
   .connect(
-    'mongodb+srv://awtproject:vGdsDw8E2qiXAPg6@cluster0-1gbsm.mongodb.net/AWT_IT_SHOP?retryWrites=true&w=majority',
+    `mongodb+srv://awtproject:${process.env.MONGO_DB_PW}@cluster0-1gbsm.mongodb.net/AWT_IT_SHOP?retryWrites=true&w=majority`,
     { useNewUrlParser: true }
   )
   .then(() => {

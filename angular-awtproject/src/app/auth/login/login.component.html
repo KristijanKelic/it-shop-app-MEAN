@@ -4,7 +4,7 @@
     <h1>Log in into your account</h1>
   </div>
   <div>
-    <mat-vertical-stepper #stepper>
+    <mat-vertical-stepper #stepper [linear]="true">
       <mat-step [stepControl]="emailFormGroup">
         <form [formGroup]="emailFormGroup">
           <ng-template matStepLabel>Fill out your email</ng-template>
@@ -14,7 +14,6 @@
               type="email"
               placeholder="Email"
               formControlName="email"
-              required
             />
           </mat-form-field>
           <div>
@@ -38,7 +37,6 @@
               matInput
               placeholder="Password"
               formControlName="password"
-              required
             />
           </mat-form-field>
           <div>
@@ -59,7 +57,9 @@
         <ng-template matStepLabel>Done</ng-template>
         <div>
           <button mat-button matStepperPrevious>Back</button>
-          <button mat-flat-button (click)="('')" color="primary">Login</button>
+          <button mat-flat-button (click)="loginUser()" color="primary">
+            Login
+          </button>
         </div>
       </mat-step>
     </mat-vertical-stepper>

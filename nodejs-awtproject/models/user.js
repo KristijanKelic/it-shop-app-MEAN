@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -11,20 +12,21 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   password: {
     type: String,
     required: true
   },
-  cart: {
-    items: [
-      {
-        productId: { type: mongoose.Schema.Types.ObjectId },
-        quantity: { type: Number, required: true }
-      }
-    ]
-  }
+  cart: [
+    {
+      productId: { type: mongoose.Schema.Types.ObjectId },
+      quantity: { type: Number, required: true }
+    }
+  ]
 });
+
+userSchema.plugin(uniqueValidator);
 
 module.exports = mongoose.model('User', userSchema);
