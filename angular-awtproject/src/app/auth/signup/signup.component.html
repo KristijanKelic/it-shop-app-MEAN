@@ -4,50 +4,58 @@
     <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
     <h1>Sign up</h1>
     <form [formGroup]="form" (submit)="createUser()">
-      <mat-form-field>
-        <input
-          matInput
-          type="text"
-          placeholder="Name*"
-          formControlName="name"
-        />
-        <mat-error>Name is required (min 4 characters)</mat-error>
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput type="text" formControlName="name" />
+        <mat-hint align="right">Min 4 characters</mat-hint>
+        <mat-error>Name is required</mat-error>
       </mat-form-field>
-      <mat-form-field class="form-input">
-        <input
-          matInput
-          type="text"
-          placeholder="Surname*"
-          formControlName="surname"
-        />
-        <mat-error>Surname is required (min 4 characters)</mat-error>
+      <mat-form-field appearance="outline">
+        <mat-label>Surname</mat-label>
+        <input matInput type="text" formControlName="surname" />
+        <mat-hint align="right">Min 4 characters</mat-hint>
+        <mat-error>Surname is required</mat-error>
       </mat-form-field>
-      <mat-form-field>
-        <input
-          matInput
-          type="email"
-          placeholder="Email*"
-          formControlName="email"
-        />
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" />
         <mat-error>Email is required</mat-error>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
         <input
           matInput
-          type="password"
-          placeholder="Password*"
+          #pw
+          [type]="hidePw ? 'text' : 'password'"
           formControlName="password"
         />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hidePw = !hidePw"
+          type="button"
+        >
+          <mat-icon>{{ hidePw ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-hint align="right">Min 10 characters</mat-hint>
         <mat-error>Password is required (min 8 characters)</mat-error>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Repeated password</mat-label>
         <input
           matInput
-          type="password"
-          placeholder="Repeated password*"
+          [type]="hiderPw ? 'text' : 'password'"
           formControlName="rpassword"
           compare="password"
         />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hiderPw = !hiderPw"
+          type="button"
+        >
+          <mat-icon>{{ hiderPw ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
         <mat-error>Passwords don't match</mat-error>
       </mat-form-field>
       <br />

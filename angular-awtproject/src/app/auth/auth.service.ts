@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
-import { User } from './user.model';
+import { User } from '../user/user.model';
 import { environment } from '../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -12,6 +12,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class AuthService {
   private isLoadingListener = new Subject<boolean>();
+  private authStatusListener = new Subject<boolean>();
+  private isAuthenticated = false;
+  private token;
+  private loginTimer: any;
+  private userId: string;
 
   constructor(
     private http: HttpClient,
@@ -21,6 +26,22 @@ export class AuthService {
 
   getIsLoadingListener() {
     return this.isLoadingListener.asObservable();
+  }
+
+  getAuthStatusListener() {
+    return this.authStatusListener.asObservable();
+  }
+
+  getisAuthenticated() {
+    return this.isAuthenticated;
+  }
+
+  getToken() {
+    return this.token;
+  }
+
+  getUserId() {
+    return this.userId;
   }
 
   createUser(user) {
@@ -57,11 +78,22 @@ export class AuthService {
       }>(environment.restAPI + 'user/login', { email, password })
       .subscribe(
         result => {
-          this.isLoadingListener.next(true);
-          this.snackBar.open(`Welcome back ${result.name}`, '', {
-            duration: 2000
-          });
-          console.log(result);
+          this.token = result.token;
+          if (this.token) {
+            const expiresIn = result.expiresIn;
+            this.isAuthenticated = true;
+            this.userId = result.userId;
+            this.authStatusListener.next(this.isAuthenticated);
+            this.setAuthTimer(expiresIn);
+            const now = new Date();
+            const expirationDate = new Date(now.getTime() + expiresIn * 1000);
+            this.storeAuthData(this.token, expirationDate, this.userId);
+            this.isLoadingListener.next(true);
+            this.snackBar.open(`Welcome back ${result.name}`, '', {
+              duration: 2000
+            });
+            this.router.navigate(['/']);
+          }
         },
         error => {
           this.snackBar.open(error.error.message, '', {
@@ -71,5 +103,68 @@ export class AuthService {
           console.log(error);
         }
       );
+  }
+
+  logout() {
+    clearTimeout(this.loginTimer);
+    this.token = null;
+    this.isAuthenticated = false;
+    this.authStatusListener.next(this.isAuthenticated);
+    this.clearAuthData();
+    this.userId = null;
+    this.router.navigate(['/']);
+    this.snackBar.open('Logged out', '', {
+      duration: 2000
+    });
+  }
+
+  private storeAuthData(token: string, exiprationDate: Date, userId: string) {
+    localStorage.setItem('token', token);
+    localStorage.setItem('expirationDate', exiprationDate.toISOString());
+    localStorage.setItem('userId', userId);
+  }
+
+  private clearAuthData() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('expirationDate');
+    localStorage.removeItem('userId');
+  }
+
+  autoAuthUser() {
+    const authInformation = this.getAuthData();
+    if (!authInformation) {
+      return;
+    }
+    const now = new Date();
+    const expiresIn = authInformation.expirationDate.getTime() - now.getTime();
+
+    if (expiresIn > 0) {
+      this.token = authInformation.token;
+      this.isAuthenticated = true;
+      this.userId = authInformation.userId;
+      this.setAuthTimer(expiresIn / 1000);
+      this.authStatusListener.next(this.isAuthenticated);
+    }
+  }
+
+  private getAuthData() {
+    const token = localStorage.getItem('token');
+    const expirationDate = localStorage.getItem('expirationDate');
+    const userId = localStorage.getItem('userId');
+    if (!token && !expirationDate) {
+      return;
+    }
+    return {
+      token,
+      expirationDate: new Date(expirationDate),
+      userId
+    };
+  }
+
+  private setAuthTimer(duration) {
+    console.log('Setting timer', duration);
+    this.loginTimer = setTimeout(() => {
+      this.logout();
+    }, duration * 1000);
   }
 }

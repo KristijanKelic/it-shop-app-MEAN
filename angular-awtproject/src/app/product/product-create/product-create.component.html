@@ -1,0 +1,131 @@
+<div class="grid-list">
+  <div><h1>Create product</h1></div>
+  <div>
+    <mat-vertical-stepper [linear]="true" #stepper>
+      <mat-step [stepControl]="titleFormGroup">
+        <form [formGroup]="titleFormGroup">
+          <ng-template matStepLabel>What is your product name?</ng-template>
+          <mat-form-field>
+            <input
+              matInput
+              type="text"
+              placeholder="Title*"
+              formControlName="title"
+            />
+            <mat-error>Required (min 4 characters)</mat-error>
+          </mat-form-field>
+          <div>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="contentFormGroup">
+        <form [formGroup]="contentFormGroup">
+          <ng-template matStepLabel>Describe your product</ng-template>
+          <mat-form-field>
+            <textarea
+              #desc
+              matInput
+              placeholder="Description"
+              formControlName="content"
+            ></textarea>
+            <mat-hint align="end">{{desc.value.length}} / 200</mat-hint>
+            <mat-error>Required</mat-error>
+          </mat-form-field>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="imageFormGroup">
+        <form [formGroup]="imageFormGroup">
+          <ng-template matStepLabel
+            >Upload an image of your product</ng-template
+          >
+
+          <button mat-stroked-button type="button" (click)="filePicker.click()">
+            Add Image
+          </button>
+          <input
+            type="file"
+            hidden
+            #filePicker
+            (change)="onImagePicked($event)"
+            fileControlName="image"
+          />
+          <div *ngIf="!imagePreviewUrl">
+            <i>Make sure you select valid mime-type (.jpg, .jpeg, .png..)</i>
+          </div>
+          <div
+            class="image-preview"
+            *ngIf="
+              imagePreviewUrl !== '' &&
+              imagePreviewUrl &&
+              imageFormGroup.get('image').valid
+            "
+          >
+            <div></div>
+            <div>
+              <img [src]="imagePreviewUrl" [alt]="titleFormGroup.value.title" />
+            </div>
+            <div></div>
+          </div>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="categoryFormGroup">
+        <form [formGroup]="categoryFormGroup">
+          <ng-template matStepLabel>Select category</ng-template>
+          <mat-form-field>
+            <mat-select
+              matInput
+              formControlName="category"
+              [(value)]="categoryFormGroup.get('category').value"
+            >
+              <mat-option value="laptop">
+                Laptop
+              </mat-option>
+              <mat-option value="smartphone">
+                Smartphone
+              </mat-option>
+            </mat-select>
+            <mat-error>Required</mat-error>
+          </mat-form-field>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="priceFormGroup">
+        <form [formGroup]="priceFormGroup">
+          <ng-template matStepLabel>Choose your price</ng-template>
+          <mat-form-field>
+            <input
+              matInput
+              type="number"
+              placeholder="Price"
+              formControlName="price"
+            />
+            <mat-error>Required</mat-error>
+          </mat-form-field>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-raised-button (click)="onCreate()">Create product</button>
+        </div>
+      </mat-step>
+    </mat-vertical-stepper>
+  </div>
+</div>

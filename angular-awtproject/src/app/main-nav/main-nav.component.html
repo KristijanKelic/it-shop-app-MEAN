@@ -18,8 +18,8 @@
           <a routerLink="/" mat-button
             ><mat-icon color="primary">list</mat-icon> Products List</a
           >
-          <a href="#" mat-button
-            ><mat-icon color="primary">shopping_cart</mat-icon> Shopping cart</a
+          <a routerLink="/create-product" mat-button *ngIf="userIsAuthenticated"
+            ><mat-icon color="primary">add</mat-icon> Create product</a
           >
         </mat-nav-list>
       </mat-expansion-panel>
@@ -29,8 +29,17 @@
           <mat-panel-description>User</mat-panel-description>
         </mat-expansion-panel-header>
         <mat-nav-list>
-          <a routerLink="/auth/login" mat-button
+          <a routerLink="/auth/login" mat-button *ngIf="!userIsAuthenticated"
             ><mat-icon color="primary">forward</mat-icon> Login</a
+          >
+          <a routerLink="/user/profile" mat-button *ngIf="userIsAuthenticated"
+            ><mat-icon color="primary">account_box</mat-icon> My profile</a
+          >
+          <a routerLink="/user/products" mat-button *ngIf="userIsAuthenticated"
+            ><mat-icon color="primary">list</mat-icon> My products</a
+          >
+          <a routerLink="/user/cart" mat-button *ngIf="userIsAuthenticated"
+            ><mat-icon color="primary">shopping_cart</mat-icon> Cart</a
           >
         </mat-nav-list>
       </mat-expansion-panel>
@@ -64,10 +73,9 @@
       </button>
       <span>IT shop</span>
       <span class="spacer"></span>
-      <mat-form-field>
-        <input matInput type="text" />
-      </mat-form-field>
-      <mat-icon>search</mat-icon>
+      <button mat-button (click)="onLogout()" *ngIf="userIsAuthenticated">
+        Logout
+      </button>
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>

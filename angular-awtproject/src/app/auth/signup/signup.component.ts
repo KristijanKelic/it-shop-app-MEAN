@@ -13,6 +13,8 @@ export class SignupComponent implements OnInit, OnDestroy {
   form: FormGroup;
   isLoading = false;
   loadingStatus: Subscription;
+  hidePw: true;
+  hiderPw: true;
 
   constructor(private authService: AuthService) {}
 
@@ -33,7 +35,7 @@ export class SignupComponent implements OnInit, OnDestroy {
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, [
         Validators.required,
-        Validators.minLength(8)
+        Validators.minLength(10)
       ]),
       rpassword: new FormControl(null, [
         Validators.required,
@@ -44,7 +46,6 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   createUser() {
     if (this.form.invalid) {
-      console.log('uslo');
       return;
     }
     const user = {

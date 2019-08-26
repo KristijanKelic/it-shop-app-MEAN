@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   passwordFormGroup: FormGroup;
   isLoading = false;
   loadingStatus: Subscription;
+  hidePw: true;
 
   constructor(private authService: AuthService) {}
 
