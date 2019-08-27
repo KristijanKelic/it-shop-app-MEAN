@@ -1,14 +1,40 @@
-.grid-list {
-  margin: 2rem;
+.main-grid {
+  grid-template-areas:
+    'search'
+    'list'
+    'paginator';
+  margin: 2rem 2rem 0rem 2rem;
   display: grid;
-  grid-template-rows: auto auto;
-  grid-template-columns: auto auto;
+}
+
+.paginator-grid {
+  grid-area: 'paginator';
+}
+
+.search-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+}
+
+.list-grid {
+  display: grid;
+  grid-area: 'list';
+  grid-template-columns: 50% auto;
+  margin: 10% 0%;
+  box-sizing: border-box;
   grid-column-gap: 2rem;
   grid-row-gap: 2rem;
 }
 
+.list-grid-item mat-card {
+  width: 100%;
+  height: 100%;
+}
+
 @media only screen and (max-width: 750px) {
-  .grid-list {
+  .list-grid {
     grid-template-columns: auto;
   }
 }

@@ -15,6 +15,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   exports: [
@@ -32,7 +33,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatStepperModule,
     MatProgressBarModule,
     MatSnackBarModule,
-    MatSelectModule
+    MatSelectModule,
+    MatPaginatorModule
   ]
 })
 export class AngularMaterialModule {}

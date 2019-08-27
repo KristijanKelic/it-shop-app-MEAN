@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { mimeTypeValidator } from './mime-type.validator';
 import { ProductService } from '../product.service';
+import { Product } from '../product.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   templateUrl: './product-create.component.html',
@@ -16,8 +19,17 @@ export class ProductCreateComponent implements OnInit {
   imageFormGroup: FormGroup;
 
   imagePreviewUrl;
+  isLoading = false;
+  productId;
+  product: Product;
+  mode = 'create';
 
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit() {
     this.titleFormGroup = new FormGroup({
@@ -49,6 +61,42 @@ export class ProductCreateComponent implements OnInit {
         validators: [Validators.required],
         asyncValidators: [mimeTypeValidator]
       })
+    });
+
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      if (paramMap.has('id')) {
+        this.mode = 'edit';
+        this.productId = paramMap.get('id');
+        this.isLoading = true;
+        this.productService.getProduct(this.productId).subscribe(
+          result => {
+            this.isLoading = false;
+            this.product = {
+              _id: result.product._id,
+              title: result.product.title,
+              content: result.product.content,
+              category: result.product.category,
+              price: result.product.price,
+              imageUrl: result.product.image,
+              userId: result.product.creator
+            };
+            this.titleFormGroup.setValue({ title: this.product.title });
+            this.contentFormGroup.setValue({ content: this.product.content });
+            this.categoryFormGroup.setValue({
+              category: this.product.category
+            });
+            this.priceFormGroup.setValue({ price: this.product.price });
+            this.imageFormGroup.setValue({ image: this.product.imageUrl });
+          },
+          error => {
+            this.isLoading = false;
+            this.snackBar.open(error.error.message, '', {
+              duration: 2000
+            });
+            this.router.navigate(['/']);
+          }
+        );
+      }
     });
   }
 

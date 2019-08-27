@@ -1,4 +1,5 @@
 <div class="grid-list">
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
   <div><h1>Create product</h1></div>
   <div>
     <mat-vertical-stepper [linear]="true" #stepper>
@@ -140,7 +141,7 @@
         <br />
         <div>
           <button mat-raised-button (click)="onCreate()" color="primary">
-            Create product
+            {{ mode === 'create' ? 'Create product' : 'Update product' }}
           </button>
           <button mat-button matStepperPrevious>Back</button>
         </div>

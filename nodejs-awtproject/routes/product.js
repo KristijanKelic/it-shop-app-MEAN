@@ -6,7 +6,9 @@ const productCtrl = require('../controllers/product');
 
 const router = express.Router();
 
-router.get('');
+router.get('', productCtrl.getProducts);
+
+router.get('/:id', productCtrl.getProduct);
 
 router.post('', checkAuth, fileHandler, productCtrl.postProduct);
 

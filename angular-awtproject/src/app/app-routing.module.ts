@@ -12,6 +12,7 @@ const routes: Routes = [
     component: ProductCreateComponent,
     canActivate: [AuthGuard]
   },
+  { path: 'edit-product/:id', component: ProductCreateComponent },
   { path: 'auth', loadChildren: './auth/auth.module#AuthModule' }
 ];
 
