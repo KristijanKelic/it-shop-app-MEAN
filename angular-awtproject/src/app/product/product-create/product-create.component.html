@@ -33,7 +33,7 @@
               formControlName="content"
             ></textarea>
             <mat-hint align="end"
-              >{{ desc.value.length }} / 50 (max 200)</mat-hint
+              >{{ desc.value.length }} / 50 (max 500)</mat-hint
             >
             <mat-error>Required</mat-error>
           </mat-form-field>
@@ -99,10 +99,10 @@
               formControlName="category"
               [(value)]="categoryFormGroup.get('category').value"
             >
-              <mat-option value="laptop">
+              <mat-option value="Laptop">
                 Laptop
               </mat-option>
-              <mat-option value="smartphone">
+              <mat-option value="Smartphone">
                 Smartphone
               </mat-option>
             </mat-select>

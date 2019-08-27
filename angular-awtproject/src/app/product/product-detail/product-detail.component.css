@@ -1,0 +1,8 @@
+mat-card {
+  margin: 10%;
+}
+
+.actions-flex {
+  display: flex;
+  justify-content: space-between;
+}

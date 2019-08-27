@@ -4,7 +4,7 @@ exports.getProducts = (req, res, next) => {
   const pageSize = +req.query.pageSize;
   const currentPage = +req.query.page;
 
-  const productQuery = Product.find();
+  const productQuery = Product.find().sort({ createdAt: -1 });
   let fetchedProducts;
   if (pageSize && currentPage) {
     productQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
@@ -57,16 +57,57 @@ exports.postProduct = (req, res, next) => {
 exports.getProduct = (req, res, next) => {
   Product.findById(req.params.id)
     .then(product => {
-      if(product) {
+      if (product) {
         res.status(200).json({
-          message: 'Post fetched successfully!', product: product
-        })
+          message: 'Post fetched successfully!',
+          product: product
+        });
       } else {
-        res.status(404).json({message: 'Post not found!'})
+        res.status(404).json({ message: 'Post not found!' });
       }
-    }).catch(err => {
+    })
+    .catch(err => {
       res.status(500).json({
         message: 'Fetching post failed!'
-      })
+      });
+    });
+};
+
+exports.updateProduct = (req, res, next) => {
+  let image = req.body.image;
+  if (req.file) {
+    const url = req.protocol + '://' + req.get('host');
+    image = url + '/images/' + req.file.filename;
+  }
+  const product = new Product({
+    _id: req.params.id,
+    title: req.body.title,
+    content: req.body.content,
+    image: image,
+    creator: req.userData.userId,
+    category: req.body.category,
+    price: req.body.price
+  });
+  Product.updateOne(
+    { _id: req.params.id, creator: req.userData.userId },
+    product
+  )
+    .then(result => {
+      console.log(result);
+      if (result.n > 0) {
+        res.status(200).json({
+          message: 'Updated successfully!',
+          productId: req.params.id
+        });
+      } else {
+        res.status(401).json({
+          message: 'Unauthorized!'
+        });
+      }
     })
-}
+    .catch(err => {
+      res.status(500).json({
+        message: 'Updating product failed!'
+      });
+    });
+};

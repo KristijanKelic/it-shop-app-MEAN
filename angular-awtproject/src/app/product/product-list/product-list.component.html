@@ -15,14 +15,16 @@
     <div class="list-grid">
       <mat-card *ngFor="let product of products" class="list-grid-item">
         <mat-card-header>
-          <mat-card-title>{{ product.title | uppercase }}</mat-card-title>
-          <mat-card-subtitle>{{
-            product.category | lowercase
-          }}</mat-card-subtitle>
+          <mat-card-title
+            style="cursor: pointer"
+            [routerLink]="['/product', product._id]"
+            >{{ product.title | uppercase }}</mat-card-title
+          >
+          <mat-card-subtitle>{{ product.category }}</mat-card-subtitle>
         </mat-card-header>
-        <img mat-card-image [src]="product.imageUrl" [alt]="product.title" />
+        <img mat-card-image [src]="product.image" [alt]="product.title" />
         <mat-card-content>
-          <p>
+          <p style="word-break: break-all">
             {{ product.content }}
           </p>
         </mat-card-content>

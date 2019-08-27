@@ -12,13 +12,15 @@ import { MainNavComponent } from './main-nav/main-nav.component';
 import { ProductListComponent } from './product/product-list/product-list.component';
 import { ProductCreateComponent } from './product/product-create/product-create.component';
 import { AuthInterceptor } from './auth/auth-interceptor';
+import { ProductDetailComponent } from './product/product-detail/product-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainNavComponent,
     ProductListComponent,
-    ProductCreateComponent
+    ProductCreateComponent,
+    ProductDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +32,7 @@ import { AuthInterceptor } from './auth/auth-interceptor';
     ReactiveFormsModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

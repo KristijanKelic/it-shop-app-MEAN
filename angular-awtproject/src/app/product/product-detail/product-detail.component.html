@@ -1,0 +1,40 @@
+<mat-progress-bar
+  mode="indeterminate"
+  *ngIf="isLoading && !product"
+></mat-progress-bar>
+<mat-card *ngIf="product">
+  <mat-card-header>
+    <mat-card-title>{{ product.title | uppercase }}</mat-card-title>
+    <mat-card-subtitle>{{ product.category }}</mat-card-subtitle>
+  </mat-card-header>
+  <img mat-card-image [src]="product.image" [alt]="product.title" />
+  <mat-card-content>
+    <p>
+      {{ product.content }}
+    </p>
+  </mat-card-content>
+  <mat-card-actions class="actions-flex">
+    <div>
+      <button
+        mat-raised-button
+        color="primary"
+        [routerLink]="['/edit-product', product._id]"
+        *ngIf="userIsAuth && product.userId === userId"
+      >
+        EDIT
+      </button>
+      <button
+        mat-raised-button
+        color="warn"
+        *ngIf="userIsAuth && product.userId === userId"
+      >
+        DELETE
+      </button>
+    </div>
+    <div>
+      <button mat-icon-button matTooltip="Add to cart">
+        <mat-icon>add_shopping_cart</mat-icon>
+      </button>
+    </div>
+  </mat-card-actions>
+</mat-card>

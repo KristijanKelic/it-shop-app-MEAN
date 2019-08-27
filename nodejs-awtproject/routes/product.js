@@ -10,6 +10,8 @@ router.get('', productCtrl.getProducts);
 
 router.get('/:id', productCtrl.getProduct);
 
+router.put('/:id', checkAuth, fileHandler, productCtrl.updateProduct);
+
 router.post('', checkAuth, fileHandler, productCtrl.postProduct);
 
 module.exports = router;

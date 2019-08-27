@@ -21,16 +21,23 @@
 .list-grid {
   display: grid;
   grid-area: 'list';
-  grid-template-columns: 50% auto;
+  grid-template-columns: 48% 48%;
   margin: 10% 0%;
   box-sizing: border-box;
   grid-column-gap: 2rem;
   grid-row-gap: 2rem;
+  justify-content: space-between;
 }
 
 .list-grid-item mat-card {
   width: 100%;
   height: 100%;
+}
+
+mat-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 @media only screen and (max-width: 750px) {

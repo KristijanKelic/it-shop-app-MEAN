@@ -40,7 +40,7 @@ export class ProductService {
                 _id: el._id,
                 title: el.title,
                 content: el.content,
-                imageUrl: el.image,
+                image: el.image,
                 category: el.category,
                 price: el.price,
                 userId: el.creator
@@ -96,6 +96,47 @@ export class ProductService {
             duration: 2000
           });
           this.router.navigate(['/']);
+        },
+        error => {
+          this.snackBar.open(error.error.message, '', {
+            duration: 2000
+          });
+        }
+      );
+  }
+
+  updateProduct(product) {
+    let productData: Product | FormData;
+    if (typeof product.image === 'object') {
+      productData = new FormData();
+      productData.append('_id', product._id);
+      productData.append('title', product.title);
+      productData.append('content', product.content);
+      productData.append('image', product.image);
+      productData.append('category', product.category);
+      productData.append('price', product.price);
+    } else {
+      productData = {
+        _id: product.id,
+        title: product.title,
+        content: product.content,
+        image: product.image,
+        userId: null,
+        category: product.category,
+        price: product.price
+      };
+    }
+    this.http
+      .put<{ message: string; productId: string }>(
+        BACKEND_URL + '/' + product._id,
+        productData
+      )
+      .subscribe(
+        result => {
+          this.snackBar.open(result.message, '', {
+            duration: 2000
+          });
+          this.router.navigate(['/product/' + result.productId]);
         },
         error => {
           this.snackBar.open(error.error.message, '', {

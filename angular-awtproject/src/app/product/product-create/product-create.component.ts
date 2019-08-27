@@ -41,7 +41,7 @@ export class ProductCreateComponent implements OnInit {
       content: new FormControl(null, {
         validators: [
           Validators.required,
-          Validators.maxLength(200),
+          Validators.maxLength(500),
           Validators.minLength(50)
         ]
       })
@@ -77,7 +77,7 @@ export class ProductCreateComponent implements OnInit {
               content: result.product.content,
               category: result.product.category,
               price: result.product.price,
-              imageUrl: result.product.image,
+              image: result.product.image,
               userId: result.product.creator
             };
             this.titleFormGroup.setValue({ title: this.product.title });
@@ -86,7 +86,7 @@ export class ProductCreateComponent implements OnInit {
               category: this.product.category
             });
             this.priceFormGroup.setValue({ price: this.product.price });
-            this.imageFormGroup.setValue({ image: this.product.imageUrl });
+            this.imageFormGroup.setValue({ image: this.product.image });
           },
           error => {
             this.isLoading = false;
@@ -119,8 +119,14 @@ export class ProductCreateComponent implements OnInit {
       content: this.contentFormGroup.get('content').value,
       category: this.categoryFormGroup.get('category').value,
       image: this.imageFormGroup.get('image').value,
-      price: this.priceFormGroup.get('price').value
+      price: this.priceFormGroup.get('price').value,
+      userId: null
     };
-    this.productService.addProduct(product);
+    if (this.mode === 'create') {
+      this.productService.addProduct(product);
+    } else {
+      (product as Product)._id = this.product._id;
+      this.productService.updateProduct(product);
+    }
   }
 }

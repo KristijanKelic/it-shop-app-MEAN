@@ -5,6 +5,7 @@ import { ProductListComponent } from './product/product-list/product-list.compon
 import { ProductCreateComponent } from './product/product-create/product-create.component';
 import { AuthGuard } from './auth/auth.guard';
 import { CreateProductGuard } from './product/create-product.guard';
+import { ProductDetailComponent } from './product/product-detail/product-detail.component';
 
 const routes: Routes = [
   { path: '', component: ProductListComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
     canDeactivate: [CreateProductGuard]
   },
   { path: 'edit-product/:id', component: ProductCreateComponent },
+  { path: 'product/:id', component: ProductDetailComponent },
   { path: 'auth', loadChildren: './auth/auth.module#AuthModule' }
 ];
 
