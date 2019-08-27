@@ -6,7 +6,7 @@ import { ProductCreateComponent } from './product-create/product-create.componen
 @Injectable()
 export class CreateProductGuard implements CanDeactivate<ProductCreateComponent> {
   canDeactivate(component: ProductCreateComponent): boolean {
-    if (component.titleFormGroup.dirty) {
+    if (component.titleFormGroup.dirty && !component.formSubmitted) {
       return confirm('Discard changes?');
     }
     return true;

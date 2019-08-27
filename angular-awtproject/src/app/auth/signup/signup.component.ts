@@ -15,6 +15,8 @@ export class SignupComponent implements OnInit, OnDestroy {
   loadingStatus: Subscription;
   hidePw: true;
   hiderPw: true;
+  formSubmittedStatus: Subscription;
+  formSubmitted;
 
   constructor(private authService: AuthService) {}
 
@@ -22,6 +24,10 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.loadingStatus = this.authService
       .getIsLoadingListener()
       .subscribe(willLoad => (this.isLoading = willLoad));
+
+    this.formSubmittedStatus = this.authService
+      .getFormSubmitted()
+      .subscribe(result => (this.formSubmitted = result));
 
     this.form = new FormGroup({
       name: new FormControl(null, [Validators.required]),
@@ -55,5 +61,6 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.loadingStatus.unsubscribe();
+    this.formSubmittedStatus.unsubscribe();
   }
 }

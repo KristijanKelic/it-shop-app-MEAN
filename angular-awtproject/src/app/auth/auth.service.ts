@@ -13,6 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class AuthService {
   private isLoadingListener = new Subject<boolean>();
   private authStatusListener = new Subject<boolean>();
+  private formSubmitted = new Subject<boolean>();
   private isAuthenticated = false;
   private token;
   private loginTimer: any;
@@ -44,6 +45,10 @@ export class AuthService {
     return this.userId;
   }
 
+  getFormSubmitted() {
+    return this.formSubmitted.asObservable();
+  }
+
   createUser(user) {
     this.http
       .post<{ message: string; user: User }>(
@@ -56,6 +61,7 @@ export class AuthService {
           this.snackBar.open(result.message, '', {
             duration: 2000
           });
+          this.formSubmitted.next(true);
           this.router.navigate(['/auth/login']);
         },
         error => {
@@ -63,6 +69,7 @@ export class AuthService {
           this.snackBar.open(error.error.message, '', {
             duration: 2000
           });
+          this.formSubmitted.next(false);
           this.isLoadingListener.next(false);
         }
       );

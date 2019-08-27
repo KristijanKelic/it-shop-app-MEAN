@@ -4,7 +4,7 @@ exports.getProducts = (req, res, next) => {
   const pageSize = +req.query.pageSize;
   const currentPage = +req.query.page;
 
-  const productQuery = Product.find().sort({ createdAt: -1 });
+  const productQuery = Product.find().sort({ updatedAt: 'asc' });
   let fetchedProducts;
   if (pageSize && currentPage) {
     productQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);

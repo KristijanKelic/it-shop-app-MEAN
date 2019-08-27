@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { mimeTypeValidator } from './mime-type.validator';
 import { ProductService } from '../product.service';
@@ -23,6 +24,8 @@ export class ProductCreateComponent implements OnInit {
   productId;
   product: Product;
   mode = 'create';
+  formSubmittedStatus: Subscription;
+  formSubmitted = false;
 
   constructor(
     private productService: ProductService,
@@ -32,6 +35,10 @@ export class ProductCreateComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.formSubmittedStatus = this.productService
+      .getformSubmitted()
+      .subscribe(result => (this.formSubmitted = result));
+
     this.titleFormGroup = new FormGroup({
       title: new FormControl(null, {
         validators: [Validators.required, Validators.minLength(4)]

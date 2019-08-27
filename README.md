@@ -27,6 +27,7 @@ To run everything you will need to do few steps:
 2. Same as step one you will need to navigate to angular-awtproject and run npm install there also
 3. After you have successfully installed everything navigate to nodejs folder and in your terminal run npm start to run restAPI locally, then navigate to angular folder and type ng serve -o in your terminal to serve client side application
 4. That should be it :)
+5. Make sure you add images folder inside nodejs folder for file storing to work
 ```
 
 

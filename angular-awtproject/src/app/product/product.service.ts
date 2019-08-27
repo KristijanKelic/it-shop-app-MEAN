@@ -20,11 +20,17 @@ export class ProductService {
     productCount: number;
   }>();
 
+  private formSubmitted = new Subject<boolean>();
+
   constructor(
     private http: HttpClient,
     private router: Router,
     private snackBar: MatSnackBar
   ) {}
+
+  getformSubmitted() {
+    return this.formSubmitted.asObservable();
+  }
 
   getProducts(productPerPage: number, currentPage: number) {
     const queryParams = `?pageSize=${productPerPage}&page=${currentPage}`;
@@ -95,12 +101,14 @@ export class ProductService {
           this.snackBar.open('Product created successfully!', '', {
             duration: 2000
           });
+          this.formSubmitted.next(true);
           this.router.navigate(['/']);
         },
         error => {
           this.snackBar.open(error.error.message, '', {
             duration: 2000
           });
+          this.formSubmitted.next(false);
         }
       );
   }
