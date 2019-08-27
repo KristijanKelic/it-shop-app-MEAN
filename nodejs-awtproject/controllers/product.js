@@ -111,3 +111,23 @@ exports.updateProduct = (req, res, next) => {
       });
     });
 };
+
+exports.deleteProduct = (req, res, next) => {
+  Product.deleteOne({ _id: req.params.id, creator: req.userData.userId })
+    .then(result => {
+      if (result.n > 0) {
+        res.status(200).json({
+          message: 'Deleted successfully!'
+        });
+      } else {
+        res.status(401).json({
+          message: 'Unauthorized'
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: 'Deleting product failed!'
+      });
+    });
+};

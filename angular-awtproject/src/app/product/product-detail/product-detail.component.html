@@ -27,6 +27,7 @@
         mat-raised-button
         color="warn"
         *ngIf="userIsAuth && product.userId === userId"
+        (click)="onDelete()"
       >
         DELETE
       </button>

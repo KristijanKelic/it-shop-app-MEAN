@@ -12,6 +12,8 @@ router.get('/:id', productCtrl.getProduct);
 
 router.put('/:id', checkAuth, fileHandler, productCtrl.updateProduct);
 
+router.delete('/:id', checkAuth, productCtrl.deleteProduct);
+
 router.post('', checkAuth, fileHandler, productCtrl.postProduct);
 
 module.exports = router;

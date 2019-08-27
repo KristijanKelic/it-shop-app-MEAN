@@ -1,5 +1,5 @@
 <div class="main-grid">
-  <div class="search-grid">
+  <div class="search-grid" *ngIf="products.length > 0 && !isLoading">
     <mat-form-field>
       <input matInput placeholder="Search" />
       <button mat-icon-button matSuffix (click)="('')">

@@ -63,6 +63,24 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     });
   }
 
+  onDelete() {
+    if (confirm('Are you sure you want to delete this product?')) {
+      this.productService.deleteProduct(this.product._id).subscribe(
+        result => {
+          this.snackBar.open(result.message, '', {
+            duration: 2000
+          });
+          this.router.navigate(['/']);
+        },
+        error => {
+          this.snackBar.open(error.error.message, '', {
+            duration: 2000
+          });
+        }
+      );
+    }
+  }
+
   ngOnDestroy() {
     this.authSub.unsubscribe();
   }

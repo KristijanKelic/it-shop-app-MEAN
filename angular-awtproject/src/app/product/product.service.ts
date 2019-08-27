@@ -8,7 +8,7 @@ import { Product } from './product.model';
 import { environment } from '../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-const BACKEND_URL = environment.restAPI + 'product';
+const BACKEND_URL = environment.restAPI + 'product/';
 
 @Injectable({
   providedIn: 'root'
@@ -84,7 +84,7 @@ export class ProductService {
         image: string;
         creator: string;
       };
-    }>(BACKEND_URL + '/' + id);
+    }>(BACKEND_URL + id);
   }
 
   addProduct(product) {
@@ -136,7 +136,7 @@ export class ProductService {
     }
     this.http
       .put<{ message: string; productId: string }>(
-        BACKEND_URL + '/' + product._id,
+        BACKEND_URL + product._id,
         productData
       )
       .subscribe(
@@ -152,6 +152,10 @@ export class ProductService {
           });
         }
       );
+  }
+
+  deleteProduct(id: string) {
+    return this.http.delete<{ message: string }>(BACKEND_URL + id);
   }
 
   getProductUpdateListener() {
