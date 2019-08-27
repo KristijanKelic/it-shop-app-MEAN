@@ -59,6 +59,7 @@ export class AuthService {
           this.router.navigate(['/auth/login']);
         },
         error => {
+          console.log(error);
           this.snackBar.open(error.error.message, '', {
             duration: 2000
           });

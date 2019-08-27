@@ -13,12 +13,7 @@
             <input matInput type="email" formControlName="email" />
           </mat-form-field>
           <div>
-            <button
-              mat-button
-              matStepperNext
-              color="primary"
-              [disabled]="emailFormGroup.invalid || !emailFormGroup.value"
-            >
+            <button mat-stroked-button matStepperNext color="primary">
               Next
             </button>
           </div>
@@ -47,12 +42,7 @@
           </mat-form-field>
           <div>
             <button mat-button matStepperPrevious>Back</button>
-            <button
-              mat-button
-              matStepperNext
-              color="primary"
-              [disabled]="emailFormGroup.invalid || passwordFormGroup.invalid"
-            >
+            <button mat-stroked-button matStepperNext color="primary">
               Next
             </button>
           </div>

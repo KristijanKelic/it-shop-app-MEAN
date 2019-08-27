@@ -6,7 +6,7 @@ import { Product } from './product.model';
 import { environment } from '../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-const BACKEND_URL = environment.restAPI + '/posts/';
+const BACKEND_URL = environment.restAPI + 'product';
 
 @Injectable({
   providedIn: 'root'
@@ -18,18 +18,18 @@ export class ProductService {
     private snackBar: MatSnackBar
   ) {}
 
-  addPost(post) {
-    const postData = new FormData();
-    postData.append('title', post.title);
-    postData.append('content', post.content);
-    postData.append('image', post.image, post.title);
-    postData.append('category', post.category);
-    postData.append('price', post.price);
+  addProduct(product) {
+    const productData = new FormData();
+    productData.append('title', product.title);
+    productData.append('content', product.content);
+    productData.append('image', product.image, product.title);
+    productData.append('category', product.category);
+    productData.append('price', product.price);
     this.http
-      .post<{ message: string; post: Product }>(BACKEND_URL, postData)
+      .post<{ message: string; product: Product }>(BACKEND_URL, productData)
       .subscribe(
         res => {
-          this.snackBar.open('Post created successfully!', '', {
+          this.snackBar.open('Product created successfully!', '', {
             duration: 2000
           });
           this.router.navigate(['/']);

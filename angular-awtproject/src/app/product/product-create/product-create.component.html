@@ -9,32 +9,38 @@
             <input
               matInput
               type="text"
-              placeholder="Title*"
+              placeholder="Title"
               formControlName="title"
             />
             <mat-error>Required (min 4 characters)</mat-error>
           </mat-form-field>
           <div>
-            <button mat-button matStepperNext>Next</button>
+            <button mat-stroked-button matStepperNext color="primary">
+              Next
+            </button>
           </div>
         </form>
       </mat-step>
       <mat-step [stepControl]="contentFormGroup">
         <form [formGroup]="contentFormGroup">
           <ng-template matStepLabel>Describe your product</ng-template>
-          <mat-form-field>
+          <mat-form-field style="width: 100%">
             <textarea
               #desc
               matInput
               placeholder="Description"
               formControlName="content"
             ></textarea>
-            <mat-hint align="end">{{desc.value.length}} / 200</mat-hint>
+            <mat-hint align="end"
+              >{{ desc.value.length }} / 50 (max 200)</mat-hint
+            >
             <mat-error>Required</mat-error>
           </mat-form-field>
           <div>
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
+            <button mat-stroked-button matStepperNext color="primary">
+              Next
+            </button>
           </div>
         </form>
       </mat-step>
@@ -43,7 +49,7 @@
           <ng-template matStepLabel
             >Upload an image of your product</ng-template
           >
-
+          <br />
           <button mat-stroked-button type="button" (click)="filePicker.click()">
             Add Image
           </button>
@@ -54,9 +60,7 @@
             (change)="onImagePicked($event)"
             fileControlName="image"
           />
-          <div *ngIf="!imagePreviewUrl">
-            <i>Make sure you select valid mime-type (.jpg, .jpeg, .png..)</i>
-          </div>
+          <br />
           <div
             class="image-preview"
             *ngIf="
@@ -72,8 +76,16 @@
             <div></div>
           </div>
           <div>
+            <br />
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
+            <button mat-stroked-button matStepperNext color="primary">
+              Next
+            </button>
+            <div *ngIf="!imagePreviewUrl">
+              <i class="mat-small"
+                >Make sure you select valid mime-type (.jpg, .jpeg, .png..)</i
+              >
+            </div>
           </div>
         </form>
       </mat-step>
@@ -97,7 +109,9 @@
           </mat-form-field>
           <div>
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
+            <button mat-stroked-button matStepperNext color="primary">
+              Next
+            </button>
           </div>
         </form>
       </mat-step>
@@ -115,15 +129,20 @@
           </mat-form-field>
           <div>
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
+            <button mat-stroked-button matStepperNext color="primary">
+              Next
+            </button>
           </div>
         </form>
       </mat-step>
       <mat-step>
         <ng-template matStepLabel>Done</ng-template>
+        <br />
         <div>
+          <button mat-raised-button (click)="onCreate()" color="primary">
+            Create product
+          </button>
           <button mat-button matStepperPrevious>Back</button>
-          <button mat-raised-button (click)="onCreate()">Create product</button>
         </div>
       </mat-step>
     </mat-vertical-stepper>

@@ -7,13 +7,11 @@
       <mat-form-field appearance="outline">
         <mat-label>Name</mat-label>
         <input matInput type="text" formControlName="name" />
-        <mat-hint align="right">Min 4 characters</mat-hint>
         <mat-error>Name is required</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Surname</mat-label>
         <input matInput type="text" formControlName="surname" />
-        <mat-hint align="right">Min 4 characters</mat-hint>
         <mat-error>Surname is required</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
@@ -37,8 +35,8 @@
         >
           <mat-icon>{{ hidePw ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
-        <mat-hint align="right">Min 10 characters</mat-hint>
-        <mat-error>Password is required (min 8 characters)</mat-error>
+        <mat-hint>Min 10 characters</mat-hint>
+        <mat-error>Password is required</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Repeated password</mat-label>

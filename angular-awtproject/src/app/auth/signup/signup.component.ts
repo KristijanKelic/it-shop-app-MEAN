@@ -24,14 +24,8 @@ export class SignupComponent implements OnInit, OnDestroy {
       .subscribe(willLoad => (this.isLoading = willLoad));
 
     this.form = new FormGroup({
-      name: new FormControl(null, [
-        Validators.required,
-        Validators.minLength(4)
-      ]),
-      surname: new FormControl(null, [
-        Validators.required,
-        Validators.minLength(4)
-      ]),
+      name: new FormControl(null, [Validators.required]),
+      surname: new FormControl(null, [Validators.required]),
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, [
         Validators.required,

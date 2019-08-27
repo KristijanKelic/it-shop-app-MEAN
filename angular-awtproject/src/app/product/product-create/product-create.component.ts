@@ -27,7 +27,11 @@ export class ProductCreateComponent implements OnInit {
     });
     this.contentFormGroup = new FormGroup({
       content: new FormControl(null, {
-        validators: [Validators.required, Validators.maxLength(200)]
+        validators: [
+          Validators.required,
+          Validators.maxLength(200),
+          Validators.minLength(50)
+        ]
       })
     });
     this.categoryFormGroup = new FormGroup({
@@ -62,6 +66,13 @@ export class ProductCreateComponent implements OnInit {
   }
 
   onCreate() {
-    console.log(this.imageFormGroup.value);
+    const product = {
+      title: this.titleFormGroup.get('title').value,
+      content: this.contentFormGroup.get('content').value,
+      category: this.categoryFormGroup.get('category').value,
+      image: this.imageFormGroup.get('image').value,
+      price: this.priceFormGroup.get('price').value
+    };
+    this.productService.addProduct(product);
   }
 }

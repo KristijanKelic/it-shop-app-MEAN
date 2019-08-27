@@ -18,7 +18,7 @@ exports.postProduct = (req, res, next) => {
       console.log(result);
       res.status(201).json({
         message: 'Post added successfully',
-        post: result
+        product: result
       });
     })
     .catch(err => {
