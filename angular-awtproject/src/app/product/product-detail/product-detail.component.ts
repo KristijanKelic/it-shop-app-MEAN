@@ -51,7 +51,11 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
               category: result.product.category,
               price: result.product.price,
               image: result.product.image,
-              userId: result.product.creator
+              userId: {
+                name: result.product.creator.name,
+                surname: result.product.creator.surname,
+                _id: result.product.creator._id
+              }
             };
           },
           error => {

@@ -15,6 +15,7 @@
 
         <p>{{ product.content }}</p>
         <mat-action-row>
+          <button mat-button color="accent" (click)="onDetails(product._id)">Details</button>
           <button mat-button color="warn" (click)="onDelete(product._id)">Delete</button>
           <button
             mat-button

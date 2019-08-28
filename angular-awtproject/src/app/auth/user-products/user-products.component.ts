@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 import { MatDialog } from '@angular/material/dialog';
 import { ProductService } from 'src/app/product/product.service';
@@ -20,7 +21,8 @@ export class UserProductsComponent implements OnInit, OnDestroy {
   constructor(
     private productService: ProductService,
     private matDialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -53,6 +55,10 @@ export class UserProductsComponent implements OnInit, OnDestroy {
         );
       }
     });
+  }
+
+  onDetails(id: string) {
+    this.router.navigate(['/product', id]);
   }
 
   ngOnDestroy() {

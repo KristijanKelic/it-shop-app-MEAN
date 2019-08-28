@@ -16,6 +16,7 @@ exports.getProducts = (req, res, next) => {
     productQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
   }
   productQuery
+    .populate('creator')
     .then(products => {
       fetchedProducts = products;
       if (userId) {
@@ -65,7 +66,7 @@ exports.postProduct = (req, res, next) => {
 };
 
 exports.getProduct = (req, res, next) => {
-  Product.findById(req.params.id)
+  Product.findById(req.params.id).populate('creator')
     .then(product => {
       if (product) {
         res.status(200).json({

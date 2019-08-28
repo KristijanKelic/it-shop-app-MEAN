@@ -23,7 +23,6 @@ export class ProductService {
 
   private formSubmitted = new Subject<boolean>();
 
-  private isAuthSub: Subscription;
   private isAuth;
 
   constructor(
@@ -32,7 +31,7 @@ export class ProductService {
     private snackBar: MatSnackBar,
     private authService: AuthService
   ) {
-    this.isAuthSub = this.authService
+    this.authService
       .getAuthStatusListener()
       .subscribe(isAuth => (this.isAuth = isAuth));
   }
@@ -62,7 +61,12 @@ export class ProductService {
                 image: el.image,
                 category: el.category,
                 price: el.price,
-                userId: el.creator
+                userId: {
+                  name: el.creator.name,
+                  surname: el.creator.surname,
+                  _id: el.creator._id
+                },
+                creatorName: el.creatorName
               };
             }),
             productCount: productData.productCount
@@ -95,7 +99,11 @@ export class ProductService {
         category: string;
         price: number;
         image: string;
-        creator: string;
+        creator: {
+          name: string;
+          surname: string;
+          _id: string;
+        };
       };
     }>(BACKEND_URL + id);
   }

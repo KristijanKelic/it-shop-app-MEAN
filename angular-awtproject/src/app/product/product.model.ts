@@ -5,5 +5,9 @@ export interface Product {
   image: string;
   category: string;
   price: number;
-  userId: string;
+  userId: {
+    name: string;
+    surname: string;
+    _id: string;
+  };
 }

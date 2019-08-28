@@ -6,6 +6,7 @@
   <mat-card-header>
     <mat-card-title>{{ product.title | uppercase }}</mat-card-title>
     <mat-card-subtitle>{{ product.category }}</mat-card-subtitle>
+    <mat-card-subtitle>Owner: {{ product.userId.name + ' ' + product.userId.surname }}</mat-card-subtitle>
   </mat-card-header>
   <img mat-card-image [src]="product.image" [alt]="product.title" />
   <mat-card-content>
@@ -19,14 +20,14 @@
         mat-raised-button
         color="primary"
         [routerLink]="['/edit-product', product._id]"
-        *ngIf="userIsAuth && product.userId === userId"
+        *ngIf="userIsAuth && product.userId._id === userId"
       >
         EDIT
       </button>
       <button
         mat-raised-button
         color="warn"
-        *ngIf="userIsAuth && product.userId === userId"
+        *ngIf="userIsAuth && product.userId._id === userId"
         (click)="onDelete()"
       >
         DELETE
@@ -36,7 +37,7 @@
       <button
         mat-icon-button
         matTooltip="Add to cart"
-        *ngIf="product.userId !== userId && userIsAuth"
+        *ngIf="product.userId._id !== userId && userIsAuth"
       >
         <mat-icon>add_shopping_cart</mat-icon>
       </button>
