@@ -26,7 +26,9 @@
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title><mat-icon>person</mat-icon></mat-panel-title>
-          <mat-panel-description>User</mat-panel-description>
+          <mat-panel-description>{{
+            userIsAuthenticated ? username : 'User'
+          }}</mat-panel-description>
         </mat-expansion-panel-header>
         <mat-nav-list>
           <a routerLink="/auth/login" mat-button *ngIf="!userIsAuthenticated"
@@ -35,7 +37,7 @@
           <a routerLink="/user/profile" mat-button *ngIf="userIsAuthenticated"
             ><mat-icon color="primary">account_box</mat-icon> My profile</a
           >
-          <a routerLink="/user/products" mat-button *ngIf="userIsAuthenticated"
+          <a routerLink="/auth/myproducts" mat-button *ngIf="userIsAuthenticated"
             ><mat-icon color="primary">list</mat-icon> My products</a
           >
           <a routerLink="/user/cart" mat-button *ngIf="userIsAuthenticated"

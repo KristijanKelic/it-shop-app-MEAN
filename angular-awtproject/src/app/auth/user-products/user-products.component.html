@@ -1,0 +1,30 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<div class="user-product-flex">
+  <div><h1>My products</h1></div>
+  <div>
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let product of products">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ product.title | uppercase }}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{ product.category }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <p>{{ product.content }}</p>
+        <mat-action-row>
+          <button mat-button color="warn" (click)="onDelete(product._id)">Delete</button>
+          <button
+            mat-button
+            color="primary"
+            [routerLink]="['/edit-product', product._id]"
+          >
+            Edit
+          </button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>

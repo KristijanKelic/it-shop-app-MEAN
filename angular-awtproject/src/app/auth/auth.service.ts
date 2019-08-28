@@ -13,8 +13,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class AuthService {
   private isLoadingListener = new Subject<boolean>();
   private authStatusListener = new Subject<boolean>();
-  private formSubmitted = new Subject<boolean>();
   private isAuthenticated = false;
+  private formSubmitted = new Subject<boolean>();
+  private username = new Subject<string>();
+  private name;
   private token;
   private loginTimer: any;
   private userId: string;
@@ -45,8 +47,16 @@ export class AuthService {
     return this.userId;
   }
 
+  getName() {
+    return this.name;
+  }
+
   getFormSubmitted() {
     return this.formSubmitted.asObservable();
+  }
+
+  getUsername() {
+    return this.username.asObservable();
   }
 
   createUser(user) {
@@ -91,11 +101,18 @@ export class AuthService {
             const expiresIn = result.expiresIn;
             this.isAuthenticated = true;
             this.userId = result.userId;
+            this.name = result.name;
             this.authStatusListener.next(this.isAuthenticated);
+            this.username.next(result.name);
             this.setAuthTimer(expiresIn);
             const now = new Date();
             const expirationDate = new Date(now.getTime() + expiresIn * 1000);
-            this.storeAuthData(this.token, expirationDate, this.userId);
+            this.storeAuthData(
+              this.token,
+              expirationDate,
+              this.userId,
+              this.name
+            );
             this.isLoadingListener.next(true);
             this.snackBar.open(`Welcome back ${result.name}`, '', {
               duration: 2000
@@ -117,6 +134,7 @@ export class AuthService {
     clearTimeout(this.loginTimer);
     this.token = null;
     this.isAuthenticated = false;
+    this.username.next(null);
     this.authStatusListener.next(this.isAuthenticated);
     this.clearAuthData();
     this.userId = null;
@@ -126,16 +144,23 @@ export class AuthService {
     });
   }
 
-  private storeAuthData(token: string, exiprationDate: Date, userId: string) {
+  private storeAuthData(
+    token: string,
+    exiprationDate: Date,
+    userId: string,
+    name: string
+  ) {
     localStorage.setItem('token', token);
     localStorage.setItem('expirationDate', exiprationDate.toISOString());
     localStorage.setItem('userId', userId);
+    localStorage.setItem('name', name);
   }
 
   private clearAuthData() {
     localStorage.removeItem('token');
     localStorage.removeItem('expirationDate');
     localStorage.removeItem('userId');
+    localStorage.removeItem('name');
   }
 
   autoAuthUser() {
@@ -149,9 +174,11 @@ export class AuthService {
     if (expiresIn > 0) {
       this.token = authInformation.token;
       this.isAuthenticated = true;
+      this.name = authInformation.name;
       this.userId = authInformation.userId;
       this.setAuthTimer(expiresIn / 1000);
       this.authStatusListener.next(this.isAuthenticated);
+      this.username.next(this.name);
     }
   }
 
@@ -159,13 +186,15 @@ export class AuthService {
     const token = localStorage.getItem('token');
     const expirationDate = localStorage.getItem('expirationDate');
     const userId = localStorage.getItem('userId');
+    const name = localStorage.getItem('name');
     if (!token && !expirationDate) {
       return;
     }
     return {
       token,
       expirationDate: new Date(expirationDate),
-      userId
+      userId,
+      name
     };
   }
 

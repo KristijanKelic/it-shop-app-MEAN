@@ -7,9 +7,10 @@ import { AngularMaterialModule } from '../angular-material.module';
 
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
+import { UserProductsComponent } from './user-products/user-products.component';
 
 @NgModule({
-  declarations: [LoginComponent, SignupComponent],
+  declarations: [LoginComponent, SignupComponent, UserProductsComponent],
   imports: [
     CommonModule,
     AuthRoutingModule,

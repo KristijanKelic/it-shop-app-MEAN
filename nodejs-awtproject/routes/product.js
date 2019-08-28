@@ -10,6 +10,8 @@ router.get('', productCtrl.getProducts);
 
 router.get('/:id', productCtrl.getProduct);
 
+router.get('/user/products', checkAuth, productCtrl.getUserProducts);
+
 router.put('/:id', checkAuth, fileHandler, productCtrl.updateProduct);
 
 router.delete('/:id', checkAuth, productCtrl.deleteProduct);

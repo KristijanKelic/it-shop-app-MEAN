@@ -13,6 +13,8 @@ import { AuthService } from '../auth/auth.service';
 export class MainNavComponent implements OnInit, OnDestroy {
   private authListenerSub: Subscription;
   userIsAuthenticated = false;
+  private usernameSub: Subscription;
+  username: string;
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
@@ -28,15 +30,20 @@ export class MainNavComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userIsAuthenticated = this.authService.getisAuthenticated();
+    this.username = this.authService.getName();
+    this.usernameSub = this.authService
+      .getUsername()
+      .subscribe(result => (this.username = result));
     this.authListenerSub = this.authService
       .getAuthStatusListener()
-      .subscribe(
-        isAuthenticated => (this.userIsAuthenticated = isAuthenticated)
-      );
+      .subscribe(isAuthenticated => {
+        this.userIsAuthenticated = isAuthenticated;
+      });
   }
 
   ngOnDestroy() {
     this.authListenerSub.unsubscribe();
+    this.usernameSub.unsubscribe();
   }
 
   onLogout() {

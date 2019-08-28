@@ -6,6 +6,8 @@ import { Product } from '../product.model';
 import { ProductService } from '../product.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/auth/auth.service';
+import { DialogComponent } from 'src/app/dialog/dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   templateUrl: './product-detail.component.html',
@@ -23,7 +25,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private productService: ProductService,
     private snackBar: MatSnackBar,
-    private authService: AuthService
+    private authService: AuthService,
+    private matDialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -64,21 +67,24 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   }
 
   onDelete() {
-    if (confirm('Are you sure you want to delete this product?')) {
-      this.productService.deleteProduct(this.product._id).subscribe(
-        result => {
-          this.snackBar.open(result.message, '', {
-            duration: 2000
-          });
-          this.router.navigate(['/']);
-        },
-        error => {
-          this.snackBar.open(error.error.message, '', {
-            duration: 2000
-          });
-        }
-      );
-    }
+    const dialog = this.matDialog.open(DialogComponent);
+    dialog.afterClosed().subscribe(confirm => {
+      if (confirm) {
+        this.productService.deleteProduct(this.product._id).subscribe(
+          result => {
+            this.snackBar.open(result.message, '', {
+              duration: 2000
+            });
+            this.router.navigate(['/']);
+          },
+          error => {
+            this.snackBar.open(error.error.message, '', {
+              duration: 2000
+            });
+          }
+        );
+      }
+    });
   }
 
   ngOnDestroy() {

@@ -33,7 +33,11 @@
       </button>
     </div>
     <div>
-      <button mat-icon-button matTooltip="Add to cart">
+      <button
+        mat-icon-button
+        matTooltip="Add to cart"
+        *ngIf="product.userId !== userId && userIsAuth"
+      >
         <mat-icon>add_shopping_cart</mat-icon>
       </button>
     </div>

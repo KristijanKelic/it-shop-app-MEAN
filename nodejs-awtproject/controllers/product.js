@@ -3,8 +3,14 @@ const Product = require('../models/product.js');
 exports.getProducts = (req, res, next) => {
   const pageSize = +req.query.pageSize;
   const currentPage = +req.query.page;
+  const userId = req.query.userId;
 
-  const productQuery = Product.find().sort({ updatedAt: 'asc' });
+  let productQuery = Product.find().sort({ createdAt: -1 });
+  if (userId) {
+    productQuery = Product.find({ creator: { $ne: userId } }).sort({
+      createdAt: -1
+    });
+  }
   let fetchedProducts;
   if (pageSize && currentPage) {
     productQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
@@ -12,7 +18,11 @@ exports.getProducts = (req, res, next) => {
   productQuery
     .then(products => {
       fetchedProducts = products;
-      return Product.estimatedDocumentCount();
+      if (userId) {
+        return Product.countDocuments({ creator: { $ne: userId } });
+      } else {
+        return Product.estimatedDocumentCount();
+      }
     })
     .then(count => {
       res.status(200).json({
@@ -128,6 +138,21 @@ exports.deleteProduct = (req, res, next) => {
     .catch(err => {
       res.status(500).json({
         message: 'Deleting product failed!'
+      });
+    });
+};
+
+exports.getUserProducts = (req, res, next) => {
+  Product.find({ creator: req.userData.userId })
+    .then(result => {
+      res.status(200).json({
+        message: 'Products fetched successfully!',
+        products: result
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: 'Fetching user products failed!'
       });
     });
 };

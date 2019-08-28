@@ -13,6 +13,7 @@ import { ProductListComponent } from './product/product-list/product-list.compon
 import { ProductCreateComponent } from './product/product-create/product-create.component';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { ProductDetailComponent } from './product/product-detail/product-detail.component';
+import { DialogComponent } from './dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ProductDetailComponent } from './product/product-detail/product-detail.
     MainNavComponent,
     ProductListComponent,
     ProductCreateComponent,
-    ProductDetailComponent
+    ProductDetailComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -34,6 +36,7 @@ import { ProductDetailComponent } from './product/product-detail/product-detail.
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [DialogComponent]
 })
 export class AppModule {}
