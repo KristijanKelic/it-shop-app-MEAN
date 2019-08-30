@@ -34,13 +34,13 @@
       </mat-card>
     </div>
   </div>
-  <div class="paginator-grid">
+  <div class="paginator-grid" *ngIf="products.length > 0">
     <mat-paginator
       [length]="totalProducts"
       [pageSize]="productPerPage"
       [pageSizeOptions]="pageSizeOptions"
       (page)="onChangedPage($event)"
-      *ngIf="products.length > 0"
+      [showFirstLastButtons]="true"
     ></mat-paginator>
   </div>
 </div>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -22,6 +22,7 @@ export class ProductService {
   }>();
 
   private formSubmitted = new Subject<boolean>();
+  private isLoadingListener = new Subject<boolean>();
 
   private isAuth;
 
@@ -29,7 +30,8 @@ export class ProductService {
     private http: HttpClient,
     private router: Router,
     private snackBar: MatSnackBar,
-    private authService: AuthService
+    private authService: AuthService,
+    private route: ActivatedRoute
   ) {
     this.authService
       .getAuthStatusListener()
@@ -40,53 +42,69 @@ export class ProductService {
     return this.formSubmitted.asObservable();
   }
 
+  getisLoadingListener() {
+    return this.isLoadingListener.asObservable();
+  }
+
   getProducts(productPerPage: number, currentPage: number) {
     this.isAuth = this.authService.getisAuthenticated();
-    let queryParams = `?pageSize=${productPerPage}&page=${currentPage}`;
-    if (this.isAuth) {
-      queryParams = `?pageSize=${productPerPage}&page=${currentPage}&userId=${this.authService.getUserId()}`;
-    }
-    this.http
-      .get<{ message: string; products: any[]; productCount: number }>(
-        BACKEND_URL + queryParams
-      )
-      .pipe(
-        map(productData => {
-          return {
-            products: productData.products.map(el => {
-              return {
-                _id: el._id,
-                title: el.title,
-                content: el.content,
-                image: el.image,
-                category: el.category,
-                price: el.price,
-                userId: {
-                  name: el.creator.name,
-                  surname: el.creator.surname,
-                  _id: el.creator._id
-                },
-                creatorName: el.creatorName
-              };
-            }),
-            productCount: productData.productCount
-          };
-        })
-      )
-      .subscribe(
-        result => {
-          this.products = result.products;
-          this.productsUpdated.next({
-            products: [...this.products],
-            productCount: result.productCount
-          });
-        },
-        error => {
-          this.snackBar.open(error.error.message, '', {
-            duration: 2000
-          });
-        }
-      );
+    this.route.queryParamMap.subscribe(qParams => {
+      let queryParams = `?pageSize=${productPerPage}&page=${currentPage}`;
+      if (this.isAuth) {
+        queryParams = `?pageSize=${productPerPage}&page=${currentPage}&userId=${this.authService.getUserId()}`;
+      }
+      if ((qParams as any).params.category === 'laptops') {
+        queryParams += '&category=Laptop';
+      }
+      if ((qParams as any).params.category === 'smartphones') {
+        queryParams += '&category=Smartphone';
+      }
+
+      this.isLoadingListener.next(true);
+      this.http
+        .get<{ message: string; products: any[]; productCount: number }>(
+          BACKEND_URL + queryParams
+        )
+        .pipe(
+          map(productData => {
+            return {
+              products: productData.products.map(el => {
+                return {
+                  _id: el._id,
+                  title: el.title,
+                  content: el.content,
+                  image: el.image,
+                  category: el.category,
+                  price: el.price,
+                  userId: {
+                    name: el.creator.name,
+                    surname: el.creator.surname,
+                    _id: el.creator._id
+                  },
+                  creatorName: el.creatorName
+                };
+              }),
+              productCount: productData.productCount
+            };
+          })
+        )
+        .subscribe(
+          result => {
+            this.products = result.products;
+            this.productsUpdated.next({
+              products: [...this.products],
+              productCount: result.productCount
+            });
+            this.isLoadingListener.next(false);
+          },
+          error => {
+            this.snackBar.open(error.error.message, '', {
+              duration: 2000
+            });
+            this.isLoadingListener.next(false);
+          }
+        );
+    });
   }
 
   getProduct(id: string) {

@@ -56,11 +56,11 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <mat-nav-list>
-          <a href="#" mat-button
-            ><mat-icon color="primary">laptop</mat-icon> Laptops</a
+          <button mat-button (click)="onLaptopsSelected()"
+            ><mat-icon color="primary">laptop</mat-icon> Laptops</button
           >
-          <a href="#" mat-button
-            ><mat-icon color="primary">smartphone</mat-icon> Smartphones</a
+          <button mat-button (click)="onSmartphonesSelected()"
+            ><mat-icon color="primary">smartphone</mat-icon> Smartphones</button
           >
         </mat-nav-list>
       </mat-expansion-panel>

@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable, Subscription } from 'rxjs';
 import { map, share } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 import { AuthService } from '../auth/auth.service';
 
@@ -25,7 +26,8 @@ export class MainNavComponent implements OnInit, OnDestroy {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -48,5 +50,13 @@ export class MainNavComponent implements OnInit, OnDestroy {
 
   onLogout() {
     this.authService.logout();
+  }
+
+  onLaptopsSelected() {
+    this.router.navigate([''], { queryParams: { category: 'laptops' } });
+  }
+
+  onSmartphonesSelected() {
+    this.router.navigate([''], { queryParams: { category: 'smartphones' } });
   }
 }

@@ -4,14 +4,30 @@ exports.getProducts = (req, res, next) => {
   const pageSize = +req.query.pageSize;
   const currentPage = +req.query.page;
   const userId = req.query.userId;
+  const category = req.query.category;
+  console.log(category);
 
+  let fetchedProducts;
   let productQuery = Product.find().sort({ createdAt: -1 });
-  if (userId) {
+
+  if (userId && !category) {
     productQuery = Product.find({ creator: { $ne: userId } }).sort({
       createdAt: -1
     });
   }
-  let fetchedProducts;
+  if (!userId && category) {
+    productQuery = Product.find({ category: category }).sort({
+      createdAt: -1
+    });
+  }
+  if (userId && category) {
+    productQuery = Product.find({
+      creator: { $ne: userId },
+      category: category
+    }).sort({
+      createdAt: -1
+    });
+  }
   if (pageSize && currentPage) {
     productQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
   }
@@ -19,9 +35,19 @@ exports.getProducts = (req, res, next) => {
     .populate('creator')
     .then(products => {
       fetchedProducts = products;
-      if (userId) {
+      if (userId && category) {
+        return Product.countDocuments({
+          creator: { $ne: userId },
+          category: category
+        });
+      }
+      if (!userId && category) {
+        return Product.countDocuments({ category: category });
+      }
+      if (userId && !category) {
         return Product.countDocuments({ creator: { $ne: userId } });
-      } else {
+      }
+      if (!userId && !category) {
         return Product.estimatedDocumentCount();
       }
     })
@@ -66,7 +92,8 @@ exports.postProduct = (req, res, next) => {
 };
 
 exports.getProduct = (req, res, next) => {
-  Product.findById(req.params.id).populate('creator')
+  Product.findById(req.params.id)
+    .populate('creator')
     .then(product => {
       if (product) {
         res.status(200).json({

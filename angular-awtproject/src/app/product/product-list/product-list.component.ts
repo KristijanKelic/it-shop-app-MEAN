@@ -14,6 +14,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   products: Product[] = [];
   private productsSub: Subscription;
   private authSub: Subscription;
+  private isLoadingSub: Subscription;
   userIsAuth = false;
   isLoading = false;
   totalProducts;
@@ -21,6 +22,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   currentPage = 1;
   pageSizeOptions = [2, 4, 6, 8];
   userId: string;
+
   constructor(
     private productService: ProductService,
     private authService: AuthService
@@ -44,15 +46,18 @@ export class ProductListComponent implements OnInit, OnDestroy {
         this.userIsAuth = isAuth;
         this.userId = this.authService.getUserId();
       });
+    this.isLoadingSub = this.productService
+      .getisLoadingListener()
+      .subscribe(is => (this.isLoading = is));
   }
 
   ngOnDestroy() {
     this.productsSub.unsubscribe();
     this.authSub.unsubscribe();
+    this.isLoadingSub.unsubscribe();
   }
 
   onChangedPage(pageData: PageEvent) {
-    this.isLoading = true;
     this.currentPage = pageData.pageIndex + 1;
     this.productPerPage = pageData.pageSize;
     this.productService.getProducts(this.productPerPage, this.currentPage);
