@@ -15,6 +15,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   loadingStatus: Subscription;
   hidePw: true;
   hiderPw: true;
+  /* Property and listener for custom observable that listens if form was submitted */
   formSubmittedStatus: Subscription;
   formSubmitted;
 
@@ -25,6 +26,8 @@ export class SignupComponent implements OnInit, OnDestroy {
       .getIsLoadingListener()
       .subscribe(willLoad => (this.isLoading = willLoad));
 
+    /* Listening for form submission to prevent deactivate guard showing up dialog if we submit the form
+       because after submission we are navigating away */
     this.formSubmittedStatus = this.authService
       .getFormSubmitted()
       .subscribe(result => (this.formSubmitted = result));

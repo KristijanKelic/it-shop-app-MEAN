@@ -1,6 +1,8 @@
 const Product = require('../models/product.js');
 
+/* this middleware fetches all products from database */
 exports.getProducts = (req, res, next) => {
+  /* extracting query params to modify the query */
   const pageSize = +req.query.pageSize;
   const currentPage = +req.query.page;
   const userId = req.query.userId;
@@ -9,16 +11,21 @@ exports.getProducts = (req, res, next) => {
   let fetchedProducts;
   let productQuery = Product.find().sort({ createdAt: -1 });
 
+  /* If we have userId that means that user is logged in so we will display all products
+     (because category is not specified) of other users */
   if (userId && !category) {
     productQuery = Product.find({ creator: { $ne: userId } }).sort({
       createdAt: -1
     });
   }
+  /*If user is not logged in and category is selected we display all products of matching category*/
   if (!userId && category) {
     productQuery = Product.find({ category: category }).sort({
       createdAt: -1
     });
   }
+  /*If we have logged in user and category selected then we will display all products of that category
+  that are not created by logged in user */
   if (userId && category) {
     productQuery = Product.find({
       creator: { $ne: userId },
@@ -27,6 +34,8 @@ exports.getProducts = (req, res, next) => {
       createdAt: -1
     });
   }
+  /*We will always recieve pageSize and currentPage for pagination purposes to fetch products in hops
+    and also this will return all products because user is not logged in and category is not specified */
   if (pageSize && currentPage) {
     productQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
   }
@@ -40,6 +49,7 @@ exports.getProducts = (req, res, next) => {
           category: category
         });
       }
+      /* Counting documents so we can display max products in pagination on frontend */
       if (!userId && category) {
         return Product.countDocuments({ category: category });
       }
@@ -64,7 +74,9 @@ exports.getProducts = (req, res, next) => {
     });
 };
 
+/* Middleware for creating product POST method */
 exports.postProduct = (req, res, next) => {
+  /* Extracting url to create imageUrl */
   const url = req.protocol + '://' + req.get('host');
   const post = new Product({
     title: req.body.title,
@@ -89,8 +101,10 @@ exports.postProduct = (req, res, next) => {
     });
 };
 
+/* Middleware for getting single product */
 exports.getProduct = (req, res, next) => {
   Product.findById(req.params.id)
+    /* populating product with creator data so we can display info about user to frontend (name, surname) */
     .populate('creator', 'name surname email')
     .then(product => {
       if (product) {
@@ -109,8 +123,10 @@ exports.getProduct = (req, res, next) => {
     });
 };
 
+/* Middleware for updating product */
 exports.updateProduct = (req, res, next) => {
   let image = req.body.image;
+  /* Checking if we have new image or user didn't change image */
   if (req.file) {
     const url = req.protocol + '://' + req.get('host');
     image = url + '/images/' + req.file.filename;
@@ -147,6 +163,7 @@ exports.updateProduct = (req, res, next) => {
     });
 };
 
+/* Middleware for deleting product */
 exports.deleteProduct = (req, res, next) => {
   Product.deleteOne({ _id: req.params.id, creator: req.userData.userId })
     .then(result => {
@@ -167,6 +184,7 @@ exports.deleteProduct = (req, res, next) => {
     });
 };
 
+/* Middleware for getting user related products */
 exports.getUserProducts = (req, res, next) => {
   Product.find({ creator: req.userData.userId })
     .then(result => {

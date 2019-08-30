@@ -1,7 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { registerLocaleData } from '@angular/common';
+import localeCro from '@angular/common/locales/hr';
+import localeCroExtra from '@angular/common/locales/extra/hr';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './angular-material.module';
@@ -13,6 +16,8 @@ import { ProductListComponent } from './product/product-list/product-list.compon
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { ProductDetailComponent } from './product/product-detail/product-detail.component';
 import { DialogComponent } from './dialog/dialog.component';
+
+registerLocaleData(localeCro, 'hr', localeCroExtra);
 
 @NgModule({
   declarations: [
@@ -32,7 +37,8 @@ import { DialogComponent } from './dialog/dialog.component';
     ReactiveFormsModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: LOCALE_ID, useValue: 'hr-HR' }
   ],
   bootstrap: [AppComponent],
   entryComponents: [DialogComponent]

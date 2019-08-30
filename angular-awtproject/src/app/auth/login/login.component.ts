@@ -17,11 +17,13 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(private authService: AuthService) {}
 
+  /* Subscribing to custom observable for loading property to know if user needs to wait */
   ngOnInit() {
     this.loadingStatus = this.authService
       .getIsLoadingListener()
       .subscribe(willLoad => (this.isLoading = willLoad));
 
+    /* Reactive forms approach for validating and creating form */
     this.emailFormGroup = new FormGroup({
       email: new FormControl(null, {
         validators: [Validators.required, Validators.email]

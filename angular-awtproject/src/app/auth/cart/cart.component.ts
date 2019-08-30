@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { AuthService } from '../auth.service';
+import { DialogComponent } from 'src/app/dialog/dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   templateUrl: './cart.component.html',
@@ -14,8 +16,10 @@ export class CartComponent implements OnInit, OnDestroy {
   private cartItemsSub: Subscription;
   displayedColumns: string[] = ['Product', 'Quantity', 'Price', 'Actions'];
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private matDialog: MatDialog) {}
 
+  /* Subscribing to custom observables from authService to stay updated when cartItems changes
+   and when we are fetching carts to display UI indicator */
   ngOnInit(): void {
     this.isLoadingSub = this.authService
       .getIsLoadingListener()
@@ -33,6 +37,7 @@ export class CartComponent implements OnInit, OnDestroy {
     this.cartItemsSub.unsubscribe();
   }
 
+  /* Counting total price for cart items */
   totalPrice() {
     let price = 0;
     for (const item of this.cartItems) {
@@ -41,13 +46,19 @@ export class CartComponent implements OnInit, OnDestroy {
     return price;
   }
 
+  /* Handler for actions on cart items */
   modifyCart(productId: string, modification: string) {
     if (modification === 'add') {
       this.authService.modifyCart(productId, 'add');
     } else if (modification === 'remove') {
       this.authService.modifyCart(productId, 'remove');
     } else {
-      this.authService.modifyCart(productId, null);
+      const dialog = this.matDialog.open(DialogComponent);
+      dialog.afterClosed().subscribe(confirm => {
+        if (confirm) {
+          this.authService.modifyCart(productId, null);
+        }
+      });
     }
   }
 }

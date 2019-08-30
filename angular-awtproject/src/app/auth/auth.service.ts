@@ -35,10 +35,14 @@ export class AuthService {
     private snackBar: MatSnackBar
   ) {}
 
+  /* Returning Subject as observable so we can subscribe in other components to get notified
+   if property isLoading changes (that means we are doing some actions that need to reach the server
+    so user needs to wait.) */
   getIsLoadingListener() {
     return this.isLoadingListener.asObservable();
   }
 
+  /* Subscribing from other components to know if user is authenticated */
   getAuthStatusListener() {
     return this.authStatusListener.asObservable();
   }
@@ -109,6 +113,7 @@ export class AuthService {
       .subscribe(
         result => {
           this.token = result.token;
+          /* If we have token that means user is logged in */
           if (this.token) {
             const expiresIn = result.expiresIn;
             this.isAuthenticated = true;
@@ -156,6 +161,7 @@ export class AuthService {
     });
   }
 
+  /* Storing authentication data in local storage so we can auto auth user upon refresh */
   private storeAuthData(
     token: string,
     exiprationDate: Date,

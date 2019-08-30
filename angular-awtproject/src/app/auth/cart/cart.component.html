@@ -35,9 +35,9 @@
       <ng-container matColumnDef="Price">
         <th mat-header-cell *matHeaderCellDef>Price</th>
         <td mat-cell *matCellDef="let product">
-          {{ product.productId.price | currency }}
+          {{ product.productId.price | currency: 'EUR' }}
         </td>
-        <td mat-footer-cell *matFooterCellDef>{{ totalPrice() | currency }}</td>
+        <td mat-footer-cell *matFooterCellDef>{{ totalPrice() | currency: 'EUR' }}</td>
       </ng-container>
 
       <!-- Actions Column -->
@@ -59,6 +59,7 @@
             color="accent"
             matTooltip="Remove one"
             (click)="modifyCart(product.productId._id, 'remove')"
+            [disabled]="product.quantity === 1"
           >
             <mat-icon>remove</mat-icon>
           </button>

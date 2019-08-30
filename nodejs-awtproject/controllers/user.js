@@ -6,13 +6,16 @@ const { validationResult } = require('express-validator');
 const User = require('../models/user');
 const Product = require('../models/product');
 
+/* Middleware for creating user */
 exports.createUser = (req, res, next) => {
   const errors = validationResult(req);
+  /* Serverside validation for email address */
   if (!errors.isEmpty()) {
     return res.status(422).json({
       message: 'Server validation error'
     });
   }
+  /* Using bcrypt to hash the password before storing it in mongoDB */
   bcrypt
     .hash(req.body.password, 10)
     .then(hashedPW => {
@@ -24,13 +27,13 @@ exports.createUser = (req, res, next) => {
         .save()
         .then(result => {
           res.status(201).json({
-            message: 'User created successfully',
+            message: 'Signed up successfully!',
             user: result
           });
         })
         .catch(err => {
           res.status(500).json({
-            message: 'Email address is already in use'
+            message: 'Email address is already in use!'
           });
         });
     })
@@ -41,6 +44,7 @@ exports.createUser = (req, res, next) => {
     });
 };
 
+/* Middleware for logging user in */
 exports.loginUser = (req, res, next) => {
   let fetchedUser;
   User.findOne({ email: req.body.email })
@@ -59,6 +63,9 @@ exports.loginUser = (req, res, next) => {
           message: 'Invalid password!'
         });
       }
+      /* creating JWT (Json Web Token) for authorization and authentication purposes
+        it signs user email and id so we can check in ../middlewares/check-auth is correct user
+        logged in */
       const token = jwt.sign(
         {
           email: fetchedUser.email,
@@ -84,6 +91,7 @@ exports.loginUser = (req, res, next) => {
     });
 };
 
+/* Middleware for adding products to the cart */
 exports.addToCart = async (req, res, next) => {
   const userId = req.userData.userId;
   const productId = req.body.productId;
@@ -105,6 +113,7 @@ exports.addToCart = async (req, res, next) => {
     });
 };
 
+/* Middleware for getting cart */
 exports.getCart = async (req, res, next) => {
   const userId = req.userData.userId;
   User.findById(userId)
@@ -123,11 +132,14 @@ exports.getCart = async (req, res, next) => {
     });
 };
 
+/* Middleware for modifying the cart */
 exports.modifyCart = async (req, res, next) => {
   const userId = req.userData.userId;
   const modification = req.body.modification;
   const user = await User.findById(userId);
 
+  /* If we are removing all items modification will be null, if we add one more item it will be add
+  and if we remove one it will be remove */
   if (!modification) {
     user
       .removeAllFromCart(req.body.productId)

@@ -11,6 +11,7 @@ import { AuthService } from './auth.service';
 export class AuthInterceptor implements HttpInterceptor {
   constructor(public authService: AuthService) {}
 
+  /* Intercepts every http request to set headers on it */
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     const token = this.authService.getToken();
     const authReq = req.clone({

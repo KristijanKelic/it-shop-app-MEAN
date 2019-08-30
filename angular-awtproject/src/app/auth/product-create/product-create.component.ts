@@ -35,6 +35,7 @@ export class ProductCreateComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    /* Creating forms using reactive approach */
     this.formSubmittedStatus = this.productService
       .getformSubmitted()
       .subscribe(result => (this.formSubmitted = result));
@@ -70,6 +71,9 @@ export class ProductCreateComponent implements OnInit {
       })
     });
 
+    /* Subscribing to route parameters to check if url has id and popule form fileds with corresponding data,
+      same component is used for creating and editing product so if we have id in route parameters that means
+      that we are updating exsisting product */
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('id')) {
         this.mode = 'edit';
@@ -107,6 +111,7 @@ export class ProductCreateComponent implements OnInit {
     });
   }
 
+  /* When we pick and image we create file reader to read it */
   onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
     this.imageFormGroup.patchValue({ image: file });
@@ -120,6 +125,7 @@ export class ProductCreateComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
+  /* One method to handle creation and update of product. The action depends on propery mode */
   onCreate() {
     const product = {
       title: this.titleFormGroup.get('title').value,
