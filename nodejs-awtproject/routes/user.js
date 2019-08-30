@@ -16,5 +16,8 @@ router.post(
 router.post('/login', userCtrl.loginUser);
 
 router.post('/add-to-cart', checkAuth, userCtrl.addToCart);
+router.post('/remove-from-cart', checkAuth, userCtrl.removeAllFromCart);
+
+router.get('/cart', checkAuth, userCtrl.getCart);
 
 module.exports = router;

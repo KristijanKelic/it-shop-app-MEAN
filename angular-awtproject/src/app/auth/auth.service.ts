@@ -20,6 +20,14 @@ export class AuthService {
   private token;
   private loginTimer: any;
   private userId: string;
+  private cartItemsListener = new Subject<
+    [
+      {
+        productId: any[];
+        quantity: number;
+      }
+    ]
+  >();
 
   constructor(
     private http: HttpClient,
@@ -57,6 +65,10 @@ export class AuthService {
 
   getUsername() {
     return this.username.asObservable();
+  }
+
+  getCartItemsListener() {
+    return this.cartItemsListener.asObservable();
   }
 
   createUser(user) {
@@ -207,7 +219,66 @@ export class AuthService {
 
   addToCart(productId: string) {
     this.http
-      .post(environment.restAPI + 'user/add-to-cart', { productId })
-      .subscribe(result => console.log(result));
+      .post<{ message: string }>(environment.restAPI + 'user/add-to-cart', {
+        productId
+      })
+      .subscribe(
+        result => {
+          this.snackBar.open(result.message, '', {
+            duration: 2000
+          });
+        },
+        error => {
+          this.snackBar.open(error.error.message, '', { duration: 2000 });
+        }
+      );
+  }
+
+  getCart() {
+    this.isLoadingListener.next(true);
+    this.http
+      .get<{
+        message: string;
+        cart: [
+          {
+            productId: any[];
+            quantity: number;
+          }
+        ];
+      }>(environment.restAPI + 'user/cart')
+      .subscribe(
+        result => {
+          this.isLoadingListener.next(false);
+          this.cartItemsListener.next(result.cart);
+        },
+        error => {
+          this.isLoadingListener.next(false);
+          this.snackBar.open(error.error.message, '', {
+            duration: 2000
+          });
+        }
+      );
+  }
+
+  removeItemsFromCart(productId: string) {
+    this.http
+      .post<{
+        message: string;
+      }>(environment.restAPI + 'user/remove-from-cart', {
+        productId
+      })
+      .subscribe(
+        result => {
+          this.getCart();
+          this.snackBar.open(result.message, '', {
+            duration: 2000
+          });
+        },
+        error => {
+          this.snackBar.open(error.error.message, '', {
+            duration: 2000
+          });
+        }
+      );
   }
 }

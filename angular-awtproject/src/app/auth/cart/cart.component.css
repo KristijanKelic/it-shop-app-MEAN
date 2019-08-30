@@ -1,0 +1,9 @@
+.cart-grid {
+  display: grid;
+  grid-template-columns: 100%;
+  margin: 10%;
+}
+
+table {
+    width: 100%;
+}

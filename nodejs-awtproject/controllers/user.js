@@ -94,7 +94,49 @@ exports.addToCart = async (req, res, next) => {
   user
     .addToCart(product)
     .then(result => {
-      console.log(result);
+      res.status(201).json({
+        message: 'Successfully added to cart!'
+      });
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      res.status(500).json({
+        message: 'Failed to add to cart!'
+      });
+    });
+};
+
+exports.getCart = async (req, res, next) => {
+  const userId = req.userData.userId;
+  User.findById(userId)
+    .populate('cart.items.productId')
+    .exec()
+    .then(result => {
+      res.status(200).json({
+        message: 'Cart fetched successfully!',
+        cart: result.cart.items
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: 'Failed to load the cart!'
+      });
+    });
+};
+
+exports.removeAllFromCart = async (req, res, next) => {
+  const userId = req.userData.userId;
+  const user = await User.findById(userId);
+
+  user
+    .removeAllFromCart(req.body.productId)
+    .then(result => {
+      res.status(200).json({
+        message: 'Deleted successfully!'
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: 'Something went wrong!'
+      });
+    });
 };
