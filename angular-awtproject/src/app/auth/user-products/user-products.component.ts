@@ -15,7 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class UserProductsComponent implements OnInit, OnDestroy {
   isLoading = false;
-  products: Product[];
+  products: Product[] = [];
   private productsSub: Subscription;
 
   constructor(

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
-import { User } from '../user/user.model';
+import { User } from './user.model';
 import { environment } from '../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -138,7 +138,7 @@ export class AuthService {
     this.authStatusListener.next(this.isAuthenticated);
     this.clearAuthData();
     this.userId = null;
-    this.router.navigate(['/']);
+    this.router.navigate(['/auth/login']);
     this.snackBar.open('Logged out', '', {
       duration: 2000
     });
@@ -203,5 +203,11 @@ export class AuthService {
     this.loginTimer = setTimeout(() => {
       this.logout();
     }, duration * 1000);
+  }
+
+  addToCart(productId: string) {
+    this.http
+      .post(environment.restAPI + 'user/add-to-cart', { productId })
+      .subscribe(result => console.log(result));
   }
 }

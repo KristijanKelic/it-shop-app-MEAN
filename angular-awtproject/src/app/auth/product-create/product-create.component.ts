@@ -4,8 +4,8 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { mimeTypeValidator } from './mime-type.validator';
-import { ProductService } from '../product.service';
-import { Product } from '../product.model';
+import { ProductService } from '../../product/product.service';
+import { Product } from '../../product/product.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({

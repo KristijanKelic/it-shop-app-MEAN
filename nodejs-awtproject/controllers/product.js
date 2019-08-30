@@ -5,7 +5,6 @@ exports.getProducts = (req, res, next) => {
   const currentPage = +req.query.page;
   const userId = req.query.userId;
   const category = req.query.category;
-  console.log(category);
 
   let fetchedProducts;
   let productQuery = Product.find().sort({ createdAt: -1 });
@@ -78,7 +77,6 @@ exports.postProduct = (req, res, next) => {
   post
     .save()
     .then(result => {
-      console.log(result);
       res.status(201).json({
         message: 'Post added successfully!',
         product: result
@@ -93,7 +91,7 @@ exports.postProduct = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
   Product.findById(req.params.id)
-    .populate('creator')
+    .populate('creator', 'name surname email')
     .then(product => {
       if (product) {
         res.status(200).json({
@@ -131,7 +129,6 @@ exports.updateProduct = (req, res, next) => {
     product
   )
     .then(result => {
-      console.log(result);
       if (result.n > 0) {
         res.status(200).json({
           message: 'Updated successfully!',

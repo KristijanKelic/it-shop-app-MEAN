@@ -6,10 +6,19 @@ import { SignupComponent } from './signup/signup.component';
 import { SignUpGuard } from './sign-up.guard';
 import { UserProductsComponent } from './user-products/user-products.component';
 import { AuthGuard } from './auth.guard';
+import { ProductCreateComponent } from './product-create/product-create.component';
+import { CreateProductGuard } from './create-product.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent, canDeactivate: [SignUpGuard] },
+  {
+    path: 'create-product',
+    component: ProductCreateComponent,
+    canActivate: [AuthGuard],
+    canDeactivate: [CreateProductGuard]
+  },
+  { path: 'edit-product/:id', component: ProductCreateComponent, canActivate: [AuthGuard] },
   {
     path: 'myproducts',
     component: UserProductsComponent,
@@ -20,6 +29,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
-  providers: [SignUpGuard]
+  providers: [SignUpGuard, CreateProductGuard, AuthGuard]
 })
 export class AuthRoutingModule {}

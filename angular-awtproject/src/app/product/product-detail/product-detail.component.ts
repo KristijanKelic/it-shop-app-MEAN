@@ -91,6 +91,10 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     });
   }
 
+  onAddToCart() {
+    this.authService.addToCart(this.product._id);
+  }
+
   ngOnDestroy() {
     this.authSub.unsubscribe();
   }

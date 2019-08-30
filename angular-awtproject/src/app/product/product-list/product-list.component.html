@@ -7,7 +7,7 @@
       </button>
     </mat-form-field>
   </div>
-  <div *ngIf="products.length <= 0 && !isLoading">
+  <div *ngIf="products.length == 0 && !isLoading">
     <h1>No products found</h1>
   </div>
   <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>

@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 
 const User = require('../models/user');
+const Product = require('../models/product');
 
 exports.createUser = (req, res, next) => {
   const errors = validationResult(req);
@@ -28,14 +29,12 @@ exports.createUser = (req, res, next) => {
           });
         })
         .catch(err => {
-          console.log(err);
           res.status(500).json({
             message: 'Email address is already in use'
           });
         });
     })
     .catch(err => {
-      console.log(err);
       res.status(500).json({
         message: 'User creation failed!'
       });
@@ -83,4 +82,19 @@ exports.loginUser = (req, res, next) => {
         message: 'Invalid authentication credentials!'
       });
     });
+};
+
+exports.addToCart = async (req, res, next) => {
+  const userId = req.userData.userId;
+  const productId = req.body.productId;
+
+  const user = await User.findById(userId);
+  const product = await Product.findById(productId);
+
+  user
+    .addToCart(product)
+    .then(result => {
+      console.log(result);
+    })
+    .catch(err => console.log(err));
 };

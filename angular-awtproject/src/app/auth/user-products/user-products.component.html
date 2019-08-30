@@ -1,7 +1,11 @@
-<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
 <div class="user-product-flex">
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
   <div><h1>My products</h1></div>
-  <div>
+  <p *ngIf="products.length === 0 && !isLoading">
+    You don't have any products yet. Create one
+    <a routerLink="/auth/create-product">here</a>
+  </p>
+  <div *ngIf="products.length > 0 && !isLoading">
     <mat-accordion>
       <mat-expansion-panel *ngFor="let product of products">
         <mat-expansion-panel-header>
@@ -15,8 +19,12 @@
 
         <p>{{ product.content }}</p>
         <mat-action-row>
-          <button mat-button color="accent" (click)="onDetails(product._id)">Details</button>
-          <button mat-button color="warn" (click)="onDelete(product._id)">Delete</button>
+          <button mat-button color="accent" (click)="onDetails(product._id)">
+            Details
+          </button>
+          <button mat-button color="warn" (click)="onDelete(product._id)">
+            Delete
+          </button>
           <button
             mat-button
             color="primary"

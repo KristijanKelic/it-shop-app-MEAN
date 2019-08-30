@@ -10,7 +10,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { ProductListComponent } from './product/product-list/product-list.component';
-import { ProductCreateComponent } from './product/product-create/product-create.component';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { ProductDetailComponent } from './product/product-detail/product-detail.component';
 import { DialogComponent } from './dialog/dialog.component';
@@ -20,7 +19,6 @@ import { DialogComponent } from './dialog/dialog.component';
     AppComponent,
     MainNavComponent,
     ProductListComponent,
-    ProductCreateComponent,
     ProductDetailComponent,
     DialogComponent
   ],

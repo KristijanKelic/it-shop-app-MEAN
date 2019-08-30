@@ -2,6 +2,7 @@ const express = require('express');
 const { check } = require('express-validator');
 
 const userCtrl = require('../controllers/user');
+const checkAuth = require('../middlewares/check-auth');
 
 const router = express.Router();
 
@@ -13,5 +14,7 @@ router.post(
 );
 
 router.post('/login', userCtrl.loginUser);
+
+router.post('/add-to-cart', checkAuth, userCtrl.addToCart);
 
 module.exports = router;
