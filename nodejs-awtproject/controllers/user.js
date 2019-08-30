@@ -123,20 +123,42 @@ exports.getCart = async (req, res, next) => {
     });
 };
 
-exports.removeAllFromCart = async (req, res, next) => {
+exports.modifyCart = async (req, res, next) => {
   const userId = req.userData.userId;
+  const modification = req.body.modification;
   const user = await User.findById(userId);
 
-  user
-    .removeAllFromCart(req.body.productId)
-    .then(result => {
-      res.status(200).json({
-        message: 'Deleted successfully!'
+  if (!modification) {
+    user
+      .removeAllFromCart(req.body.productId)
+      .then(result => {
+        res.status(200).json({
+          message: 'Deleted successfully!'
+        });
+      })
+      .catch(err => {
+        res.status(500).json({
+          message: 'Something went wrong!'
+        });
       });
-    })
-    .catch(err => {
-      res.status(500).json({
-        message: 'Something went wrong!'
+  } else {
+    user
+      .changeCartProductQuantity(req.body.productId, modification)
+      .then(result => {
+        if (modification === 'add') {
+          res.status(200).json({
+            message: 'Added successfully!'
+          });
+        } else {
+          res.status(200).json({
+            message: 'Removed successfully!'
+          });
+        }
+      })
+      .catch(error => {
+        res.status(500).json({
+          message: 'Something went wrong!'
+        });
       });
-    });
+  }
 };

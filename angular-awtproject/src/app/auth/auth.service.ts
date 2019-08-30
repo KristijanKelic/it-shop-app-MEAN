@@ -260,12 +260,13 @@ export class AuthService {
       );
   }
 
-  removeItemsFromCart(productId: string) {
+  modifyCart(productId: string, modification: string) {
     this.http
       .post<{
         message: string;
-      }>(environment.restAPI + 'user/remove-from-cart', {
-        productId
+      }>(environment.restAPI + 'user/modify-cart', {
+        productId,
+        modification
       })
       .subscribe(
         result => {

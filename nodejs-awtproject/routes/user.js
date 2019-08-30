@@ -12,11 +12,10 @@ router.post(
   check('password').isLength(10),
   userCtrl.createUser
 );
-
 router.post('/login', userCtrl.loginUser);
 
 router.post('/add-to-cart', checkAuth, userCtrl.addToCart);
-router.post('/remove-from-cart', checkAuth, userCtrl.removeAllFromCart);
+router.post('/modify-cart', checkAuth, userCtrl.modifyCart);
 
 router.get('/cart', checkAuth, userCtrl.getCart);
 

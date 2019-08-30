@@ -41,7 +41,13 @@ export class CartComponent implements OnInit, OnDestroy {
     return price;
   }
 
-  onRemoveAll(productId: string) {
-    this.authService.removeItemsFromCart(productId);
+  modifyCart(productId: string, modification: string) {
+    if (modification === 'add') {
+      this.authService.modifyCart(productId, 'add');
+    } else if (modification === 'remove') {
+      this.authService.modifyCart(productId, 'remove');
+    } else {
+      this.authService.modifyCart(productId, null);
+    }
   }
 }

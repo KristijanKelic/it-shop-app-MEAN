@@ -64,14 +64,17 @@ userSchema.methods.removeAllFromCart = function(productId) {
   return this.save();
 };
 
-userSchema.methods.changeCartProductQuantity = function(productId, change) {
+userSchema.methods.changeCartProductQuantity = function(
+  productId,
+  modification
+) {
   const productToChangeQuantity = this.cart.items.find(product => {
-    return product.productId.toStirng() === productId.toString();
+    return product.productId.toString() === productId.toString();
   });
   const productToChangeQuantityIndex = this.cart.items.findIndex(product => {
-    return product.productId.toStirng() === productId.toString();
+    return product.productId.toString() === productId.toString();
   });
-  if (change === 'plus') {
+  if (modification === 'add') {
     productToChangeQuantity.quantity += 1;
   } else {
     productToChangeQuantity.quantity -= 1;

@@ -49,6 +49,7 @@
             type="button"
             color="primary"
             matTooltip="Add one"
+            (click)="modifyCart(product.productId._id, 'add')"
           >
             <mat-icon>add</mat-icon>
           </button>
@@ -57,6 +58,7 @@
             type="button"
             color="accent"
             matTooltip="Remove one"
+            (click)="modifyCart(product.productId._id, 'remove')"
           >
             <mat-icon>remove</mat-icon>
           </button>
@@ -65,15 +67,13 @@
             type="button"
             color="warn"
             matTooltip="Remove all"
-            (click)="onRemoveAll(product.productId._id)"
+            (click)="modifyCart(product.productId._id, '')"
           >
             <mat-icon>delete_sweep</mat-icon>
           </button>
         </td>
         <td mat-footer-cell *matFooterCellDef>
-          <button mat-button>
-            Order now <mat-icon>credit_card</mat-icon>
-          </button>
+          <button mat-button>Order now <mat-icon>credit_card</mat-icon></button>
         </td>
       </ng-container>
 
