@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { User } from './user.model';
 import { environment } from '../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Product } from '../product/product.model';
 
 @Injectable({
   providedIn: 'root'
@@ -277,6 +278,63 @@ export class AuthService {
       .subscribe(
         result => {
           this.getCart();
+          this.snackBar.open(result.message, '', {
+            duration: 2000
+          });
+        },
+        error => {
+          this.snackBar.open(error.error.message, '', {
+            duration: 2000
+          });
+        }
+      );
+  }
+
+  getUserInfo() {
+    return this.http.get<{ user: User }>(environment.restAPI + 'user/get-user');
+  }
+
+  postCheckout(token: any) {
+    this.http
+      .post<{ message: string }>(environment.restAPI + 'checkout', { token })
+      .subscribe(
+        result => {
+          this.snackBar.open(result.message, '', {
+            duration: 2000
+          });
+          this.router.navigate(['/']);
+        },
+        error => {
+          this.snackBar.open(error.error.message, '', {
+            duration: 2000
+          });
+        }
+      );
+  }
+
+  getOrders() {
+    return this.http.get<{
+      orders: [
+        {
+          _id: string;
+          user: { email: string; userId: string };
+          createdAt: Date;
+          products: Product[];
+        }
+      ];
+    }>(environment.restAPI + 'checkout');
+  }
+
+  updateUser(name: string, surname: string) {
+    this.http
+      .put<{ message: string }>(environment.restAPI + 'user/update', {
+        name,
+        surname
+      })
+      .subscribe(
+        result => {
+          localStorage.setItem('name', name);
+          this.username.next(name);
           this.snackBar.open(result.message, '', {
             duration: 2000
           });

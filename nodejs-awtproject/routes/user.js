@@ -16,7 +16,10 @@ router.post('/login', userCtrl.loginUser);
 
 router.post('/add-to-cart', checkAuth, userCtrl.addToCart);
 router.post('/modify-cart', checkAuth, userCtrl.modifyCart);
-
 router.get('/cart', checkAuth, userCtrl.getCart);
+
+router.get('/get-user', checkAuth, userCtrl.getUserInfo);
+
+router.put('/update', checkAuth, userCtrl.updateUserInfo);
 
 module.exports = router;

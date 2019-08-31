@@ -5,6 +5,7 @@ import { AuthService } from '../auth.service';
 import { DialogComponent } from 'src/app/dialog/dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 
+
 @Component({
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
@@ -16,7 +17,11 @@ export class CartComponent implements OnInit, OnDestroy {
   private cartItemsSub: Subscription;
   displayedColumns: string[] = ['Product', 'Quantity', 'Price', 'Actions'];
 
-  constructor(private authService: AuthService, private matDialog: MatDialog) {}
+
+  constructor(
+    private authService: AuthService,
+    private matDialog: MatDialog
+  ) {}
 
   /* Subscribing to custom observables from authService to stay updated when cartItems changes
    and when we are fetching carts to display UI indicator */

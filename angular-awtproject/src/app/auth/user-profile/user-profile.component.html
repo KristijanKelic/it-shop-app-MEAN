@@ -1,0 +1,91 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<mat-tab-group dynamicHeight *ngIf="!isLoading && user">
+  <mat-tab label="User information">
+    <div class="user-info-grid">
+      <div class="actions-flex">
+        <button
+          mat-icon-button
+          matTooltip="Edit"
+          (click)="onEdit()"
+          *ngIf="!editUserInfo"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          matTooltip="Save"
+          *ngIf="editUserInfo"
+          color="primary"
+          (click)="onSave(userName.value, userSurname.value)"
+        >
+          <mat-icon>check</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          matTooltip="Cancel"
+          *ngIf="editUserInfo"
+          color="warn"
+          (click)="onCancel(userName, userSurname)"
+        >
+          <mat-icon>clear</mat-icon>
+        </button>
+      </div>
+      <div class="header-grid">
+        <h4>Username</h4>
+        <h4>Surname</h4>
+        <h4>Email</h4>
+      </div>
+      <div class="info-grid">
+        <mat-form-field>
+          <input
+            matInput
+            type="text"
+            [value]="user.name"
+            [disabled]="!editUserInfo"
+            #userName="matInput"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="text"
+            [value]="user.surname"
+            [disabled]="!editUserInfo"
+            #userSurname="matInput"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput type="email" [value]="user.email" disabled />
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Order history">
+    <div class="order-history">
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let order of orders" multi="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title> OrderID: {{ order._id }}</mat-panel-title>
+            <mat-panel-description>
+              Ordered at: {{ order.createdAt.toLocaleDateString() }}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div *ngFor="let product of order.products" class="order-detail-grid">
+            <div>
+              <h4>Product title</h4>
+              <p>{{ product.product.title }}</p>
+              <h4>Product description</h4>
+              <p>{{ product.product.content }}</p>
+            </div>
+            <div>
+              <h4>Product price</h4>
+              <p>{{ product.product.price | currency: 'EUR' }}</p>
+              <h4>Product quantity</h4>
+              <p>{{ product.quantity }}</p>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </mat-tab>
+</mat-tab-group>

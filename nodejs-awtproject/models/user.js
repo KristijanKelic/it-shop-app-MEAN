@@ -85,4 +85,9 @@ userSchema.methods.changeCartProductQuantity = function(
   return this.save();
 };
 
+userSchema.methods.clearCart = function() {
+  this.cart = [];
+  return this.save();
+};
+
 module.exports = mongoose.model('User', userSchema);

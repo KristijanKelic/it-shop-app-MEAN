@@ -1,0 +1,52 @@
+.user-info-grid {
+  display: grid;
+  grid-template-rows: auto auto auto;
+  margin: 5%;
+}
+
+.order-detail-grid {
+  display: grid;
+  grid-template-columns: 75% 25%;
+  border-bottom: 1px dashed black;
+}
+
+.order-detail-grid:last-child {
+  border-bottom: none;
+}
+
+.order-history {
+  margin: 5%;
+}
+
+.header-grid {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+}
+
+.actions-flex {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media only screen and (max-width: 750px) {
+  .user-info-grid {
+    display: grid;
+    grid-template-columns: 100%;
+    margin: 5%;
+  }
+
+  .header-grid {
+    display: grid;
+    grid-template-rows: 33% 33% 33%;
+  }
+  
+  .info-grid {
+    display: grid;
+    grid-template-rows: 33% 33% 33%;
+  }
+}

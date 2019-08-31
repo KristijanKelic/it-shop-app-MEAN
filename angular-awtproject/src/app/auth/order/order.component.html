@@ -1,0 +1,12 @@
+<div class="payment">
+  <h5>Fill out data for payment</h5>
+  <form novalidate (ngSubmit)="buy()" [formGroup]="paymentForm">
+    <mat-form-field>
+      <input matInput type="text" formControlName="name" placeholder="Name" />
+    </mat-form-field>
+    <div id="card-element" class="field"></div>
+    <button type="submit" mat-raised-button color="primary">
+      ORDER NOW
+    </button>
+  </form>
+</div>

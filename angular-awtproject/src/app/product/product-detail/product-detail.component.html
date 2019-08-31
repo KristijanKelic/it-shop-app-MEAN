@@ -18,6 +18,9 @@
     <p>
       {{ product.content }}
     </p>
+    <p>
+      <strong>{{ product.price | currency: 'EUR' }}</strong>
+    </p>
   </mat-card-content>
   <mat-card-actions class="actions-flex">
     <div>

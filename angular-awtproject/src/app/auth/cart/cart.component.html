@@ -3,7 +3,7 @@
   <div>
     <h1>My cart</h1>
   </div>
-  <div *ngIf="cartItems.length === 0">
+  <div *ngIf="cartItems.length === 0 && !isLoading">
     <p>
       Your cart is empty. Search for products to add them.
     </p>
@@ -37,7 +37,9 @@
         <td mat-cell *matCellDef="let product">
           {{ product.productId.price | currency: 'EUR' }}
         </td>
-        <td mat-footer-cell *matFooterCellDef>{{ totalPrice() | currency: 'EUR' }}</td>
+        <td mat-footer-cell *matFooterCellDef>
+          {{ totalPrice() | currency: 'EUR' }}
+        </td>
       </ng-container>
 
       <!-- Actions Column -->
@@ -74,7 +76,7 @@
           </button>
         </td>
         <td mat-footer-cell *matFooterCellDef>
-          <button mat-button>Order now <mat-icon>credit_card</mat-icon></button>
+          <a mat-button routerLink="/auth/order">Order now</a>
         </td>
       </ng-container>
 

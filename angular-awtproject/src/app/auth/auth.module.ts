@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { AuthRoutingModule } from './auth-routing.module';
 import { AngularMaterialModule } from '../angular-material.module';
@@ -10,6 +10,10 @@ import { SignupComponent } from './signup/signup.component';
 import { UserProductsComponent } from './user-products/user-products.component';
 import { ProductCreateComponent } from './product-create/product-create.component';
 import { CartComponent } from './cart/cart.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { OrderComponent } from './order/order.component';
+
+import { NgxStripeModule } from 'ngx-stripe';
 
 @NgModule({
   declarations: [
@@ -17,13 +21,17 @@ import { CartComponent } from './cart/cart.component';
     SignupComponent,
     UserProductsComponent,
     ProductCreateComponent,
-    CartComponent
+    CartComponent,
+    UserProfileComponent,
+    OrderComponent
   ],
   imports: [
     CommonModule,
     AuthRoutingModule,
     AngularMaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule,
+    NgxStripeModule.forRoot('<STRIPE PUBLIC TEST KEY>')
   ]
 })
 export class AuthModule {}
