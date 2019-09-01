@@ -29,29 +29,36 @@ To run everything you will need to do few steps:
 ```
 
 ## NOTE
-This app uses mongodb atlas and stripe. That means you need to provide some keys before running app.
+
+This app uses mongodb atlas, stripe and nodemailer. That means you need to provide some keys before running app.
 My keys and tokens are stored in .env file which is not commited to GitHub.
+
 ```
 For mongodb connection go to (https://cloud.mongodb.com) create new account, cluster and one user with access to read write any database.
 
 For stripe you need to create account on (https://stripe.com). After that go to dashboard and create 2 test keys (1 public and 1  secret). Copy public key and paste it in angular-awtproject/src/app/auth/auth.module.ts in appropriate palce.
 
 Finally you will have to create .env file in the root folder of nodejs-awtproject and set the variables:
-MONGODB_USERNAME= <USERNAME FOR USER YOU CREATED IN CLOUD MONGODB>
-MONGODB_PASSWORD= <PASSWORD FOR USER YOU CREATED IN CLOUD MONGODB>
-STRIPE_SK= <SECRET KEY YOU GENERATED IN STRIPE>
-JWT_SECRET= JWT secret is used for hashing jsonwebtoken, you can put here anything you want! (example MY_BIG_SECRET)
+1.MONGODB_USERNAME= <USERNAME FOR USER YOU CREATED IN CLOUD MONGODB>
+2.MONGODB_PASSWORD= <PASSWORD FOR USER YOU CREATED IN CLOUD MONGODB>
+3.STRIPE_SK= <SECRET KEY YOU GENERATED IN STRIPE>
+4.JWT_SECRET= JWT secret is used for hashing jsonwebtoken, you can put here anything you want! (example MY_BIG_SECRET)
+5.EMAIL_ADDRESS=<YOUR GMAIL ACCOUNT>
+6.EMAIL_PASSWORD=<YOUR GMAIL PASSWORD>
+
+Note: Nodemailer will use gmail as a service for sending emails for reseting password.To make everything
+work you need to turn off 2step verification on your gmail account and 'Allow less secure apps' must be toggled on!
 
 That's it :-)
 ```
 
 ## Built With
 
-* [Angular](https://angular.io/) - Javascript framework for client side applications
-* [NodeJS](https://nodejs.org/en/) - Javascript runtime environment for serverside javascript (server)
-* [npm](https://www.npmjs.com/) - Used to handle packages installations
-* [mongoDB](https://www.mongodb.com/) - MongoDB Atlas is used as a database
+- [Angular](https://angular.io/) - Javascript framework for client side applications
+- [NodeJS](https://nodejs.org/en/) - Javascript runtime environment for serverside javascript (server)
+- [npm](https://www.npmjs.com/) - Used to handle packages installations
+- [mongoDB](https://www.mongodb.com/) - MongoDB Atlas is used as a database
 
 ## Authors
 
-* **Kristijan Kelić**
+- **Kristijan Kelić**

@@ -13,7 +13,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   passwordFormGroup: FormGroup;
   isLoading = false;
   loadingStatus: Subscription;
-  hidePw: true;
+  hidePw = false;
+
+  showResetPassword = false;
 
   constructor(private authService: AuthService) {}
 
@@ -46,5 +48,13 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.loadingStatus.unsubscribe();
+  }
+
+  onResetPassword() {
+    this.showResetPassword = true;
+  }
+
+  resetPassword(email) {
+    this.authService.requestResetPassword(email);
   }
 }

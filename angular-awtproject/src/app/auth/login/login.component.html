@@ -61,6 +61,20 @@
     </mat-vertical-stepper>
   </div>
   <div>
+    <h4>Forgot password?</h4>
+    <button (click)="onResetPassword()" mat-button>Reset password</button>
+    <div *ngIf="showResetPassword">
+      <mat-form-field>
+        <input matInput placeholder="Email" #resetPwEmail="matInput" />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="resetPassword(resetPwEmail.value)"
+        >
+          <mat-icon>send</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
     <h4>Don't have an account? Create one</h4>
     <a routerLink="/auth/signup" mat-flat-button color="primary">Sign up</a>
   </div>

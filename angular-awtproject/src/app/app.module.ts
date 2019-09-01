@@ -16,6 +16,7 @@ import { ProductListComponent } from './product/product-list/product-list.compon
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { ProductDetailComponent } from './product/product-detail/product-detail.component';
 import { DialogComponent } from './dialog/dialog.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 registerLocaleData(localeCro, 'hr', localeCroExtra);
 
@@ -25,7 +26,8 @@ registerLocaleData(localeCro, 'hr', localeCroExtra);
     MainNavComponent,
     ProductListComponent,
     ProductDetailComponent,
-    DialogComponent
+    DialogComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

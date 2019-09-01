@@ -13,8 +13,8 @@ export class SignupComponent implements OnInit, OnDestroy {
   form: FormGroup;
   isLoading = false;
   loadingStatus: Subscription;
-  hidePw: true;
-  hiderPw: true;
+  hidePw = false;
+  hiderPw = false;
   /* Property and listener for custom observable that listens if form was submitted */
   formSubmittedStatus: Subscription;
   formSubmitted;

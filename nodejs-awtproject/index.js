@@ -7,6 +7,7 @@ const cors = require('cors');
 const productRoutes = require('./routes/product');
 const userRoutes = require('./routes/user');
 const orderRoutes = require('./routes/order');
+const resetPassword = require('./middlewares/reset-password');
 
 const app = express();
 
@@ -75,6 +76,11 @@ app.use(cors());
 app.use('/api/product', productRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/checkout', orderRoutes);
+
+// FOR PASSWORD RESET
+app.post('/api/reset-password-request', resetPassword.requestPasswordReset);
+app.get('/api/check-reset-token', resetPassword.checkResetToken);
+app.put('/api/reset-password', resetPassword.resetPassword);
 
 mongoose
   .connect(

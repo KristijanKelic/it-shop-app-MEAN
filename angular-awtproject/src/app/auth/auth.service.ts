@@ -346,4 +346,59 @@ export class AuthService {
         }
       );
   }
+
+  requestResetPassword(email: string) {
+    this.isLoadingListener.next(true);
+    this.http
+      .post<{ message: string }>(
+        environment.restAPI + 'reset-password-request',
+        {
+          email
+        }
+      )
+      .subscribe(
+        result => {
+          this.isLoadingListener.next(false);
+          this.snackBar.open(result.message, '', {
+            duration: 2000
+          });
+        },
+        error => {
+          this.isLoadingListener.next(false);
+          this.snackBar.open(error.error.message, '', {
+            duration: 2000
+          });
+        }
+      );
+  }
+
+  checkResetPasswordToken(token: string) {
+    return this.http.get<{ valid: boolean; email: string }>(
+      environment.restAPI + 'check-reset-token?token=' + token
+    );
+  }
+
+  resetPassword(newPassword: string, email: string) {
+    this.isLoadingListener.next(true);
+    this.http
+      .put<{ message: string }>(environment.restAPI + 'reset-password', {
+        newPassword,
+        email
+      })
+      .subscribe(
+        result => {
+          this.isLoadingListener.next(false);
+          this.snackBar.open(result.message, '', {
+            duration: 2000
+          });
+          this.router.navigate(['/auth/login']);
+        },
+        error => {
+          this.isLoadingListener.next(false);
+          this.snackBar.open(error.error.message, '', {
+            duration: 2000
+          });
+        }
+      );
+  }
 }
