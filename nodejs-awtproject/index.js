@@ -10,9 +10,6 @@ const orderRoutes = require('./routes/order');
 
 const app = express();
 
-process.env.MONGO_DB_PW = '';
-process.env.JWT_SECRET = 'AWTPROJECT_2019';
-
 const normalizePort = val => {
   var port = parseInt(val, 10);
 
@@ -81,7 +78,7 @@ app.use('/api/checkout', orderRoutes);
 
 mongoose
   .connect(
-    `mongodb+srv://<USERNAME>:<PASSWORD>@cluster0-1gbsm.mongodb.net/AWT_IT_SHOP?retryWrites=true&w=majority`,
+    `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0-1gbsm.mongodb.net/AWT_IT_SHOP?retryWrites=true&w=majority`,
     { useNewUrlParser: true }
   )
   .then(() => {

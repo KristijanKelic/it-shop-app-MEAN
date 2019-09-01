@@ -31,7 +31,7 @@ import { NgxStripeModule } from 'ngx-stripe';
     AngularMaterialModule,
     ReactiveFormsModule,
     FormsModule,
-    NgxStripeModule.forRoot('<STRIPE PUBLIC TEST KEY>')
+    NgxStripeModule.forRoot('pk_test_eVsxb9BmRd8K5pbmiI4201uK00ORSCd4yZ')
   ]
 })
 export class AuthModule {}

@@ -1,7 +1,7 @@
 const Order = require('../models/order');
 const User = require('../models/user');
 
-const stripe = require('stripe')('<STRIPE SECRET TEST KEY>');
+const stripe = require('stripe')(process.env.STRIPE_SK);
 
 exports.postCheckout = async (req, res, next) => {
   const token = req.body.token;

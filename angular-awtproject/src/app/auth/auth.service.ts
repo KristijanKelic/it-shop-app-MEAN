@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
 import { User } from './user.model';
-import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environment.prod';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Product } from '../product/product.model';
 

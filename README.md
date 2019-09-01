@@ -19,23 +19,28 @@ angularCLI -> install it globally on your machine with npm install -g @angular/c
 
 A step by step series of examples that tell you how to get a development env running
 
-Say what the step will be
-
 ```
 To run everything you will need to do few steps:
 1. First navigate to nodejs-awtproject and open terminal window there and install dependencies with npm install
 2. Same as step one you will need to navigate to angular-awtproject and run npm install there also
 3. After you have successfully installed everything navigate to nodejs folder and in your terminal run npm start to run restAPI locally, then navigate to angular folder and type ng serve -o in your terminal to serve client side application
-4. That should be it :)
-5. Make sure you add images folder inside nodejs folder for file storing to work
+4. Make sure you add images folder inside nodejs folder for file storing to work
+5. Read the NOTE below
 ```
 
 ## NOTE
 This app uses mongodb atlas and stripe. That means you need to provide some keys before running app.
+My keys and tokens are stored in .env file which is not commited to GitHub.
 ```
-For mongodb connection go to (https://cloud.mongodb.com) create new account, cluster and one user with access to read write any database. Go to index.js file in nodejs-awtproject and paste your username and password in mongodb connection string at bottom of the file.
+For mongodb connection go to (https://cloud.mongodb.com) create new account, cluster and one user with access to read write any database.
 
-For stripe you need to create account on (https://stripe.com). After that go to dashboard and create 2 test keys (1 public and 1  secret). Copy public key and paste it in angular-awtproject/src/app/auth/auth.module.ts in appropriate palce. Copy secret key and paste it in nodejs-awtproject/controllers/order.js in appropriate place.
+For stripe you need to create account on (https://stripe.com). After that go to dashboard and create 2 test keys (1 public and 1  secret). Copy public key and paste it in angular-awtproject/src/app/auth/auth.module.ts in appropriate palce.
+
+Finally you will have to create .env file in the root folder of nodejs-awtproject and set the variables:
+MONGODB_USERNAME= <USERNAME FOR USER YOU CREATED IN CLOUD MONGODB>
+MONGODB_PASSWORD= <PASSWORD FOR USER YOU CREATED IN CLOUD MONGODB>
+STRIPE_SK= <SECRET KEY YOU GENERATED IN STRIPE>
+JWT_SECRET= JWT secret is used for hashing jsonwebtoken, you can put here anything you want! (example MY_BIG_SECRET)
 
 That's it :-)
 ```

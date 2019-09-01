@@ -9,6 +9,9 @@
   </div>
   <div *ngIf="products.length == 0 && !isLoading">
     <h1>No products found</h1>
+    <div class="not-found">
+      <img src="../../../assets/nothinghere.png" />
+    </div>
   </div>
   <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
   <div *ngIf="!isLoading">

@@ -7,6 +7,9 @@
     <p>
       Your cart is empty. Search for products to add them.
     </p>
+    <div class="not-found">
+      <img src="../../../assets/nothinghere.png" />
+    </div>
   </div>
   <div *ngIf="cartItems.length > 0 && !isLoading">
     <table mat-table [dataSource]="cartItems" class="mat-elevation-z8">

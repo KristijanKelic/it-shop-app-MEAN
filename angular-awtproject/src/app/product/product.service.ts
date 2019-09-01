@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Product } from './product.model';
-import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environment.prod';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../auth/auth.service';
 

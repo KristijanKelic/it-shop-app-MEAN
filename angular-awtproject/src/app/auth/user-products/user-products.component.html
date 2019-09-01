@@ -1,12 +1,17 @@
 <div class="user-product-flex">
   <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
   <div><h1>My products</h1></div>
-  <p *ngIf="products.length === 0 && !isLoading">
-    You don't have any products yet. Create one
-    <a routerLink="/auth/create-product">here</a>
-  </p>
+  <div *ngIf="products.length === 0 && !isLoading">
+    <p>
+      You don't have any products yet. Create one
+      <a routerLink="/auth/create-product">here</a>
+    </p>
+    <div class="not-found">
+      <img src="../../../assets/nothinghere.png" />
+    </div>
+  </div>
   <div *ngIf="products.length > 0 && !isLoading">
-    <mat-accordion>
+    <mat-accordion multi="true">
       <mat-expansion-panel *ngFor="let product of products">
         <mat-expansion-panel-header>
           <mat-panel-title>

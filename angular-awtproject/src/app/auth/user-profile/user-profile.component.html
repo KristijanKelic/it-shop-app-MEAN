@@ -62,8 +62,8 @@
   </mat-tab>
   <mat-tab label="Order history">
     <div class="order-history">
-      <mat-accordion>
-        <mat-expansion-panel *ngFor="let order of orders" multi="true">
+      <mat-accordion multi="true" *ngIf="orders.length !== 0">
+        <mat-expansion-panel *ngFor="let order of orders">
           <mat-expansion-panel-header>
             <mat-panel-title> OrderID: {{ order._id }}</mat-panel-title>
             <mat-panel-description>
@@ -86,6 +86,9 @@
           </div>
         </mat-expansion-panel>
       </mat-accordion>
+      <div *ngIf="orders.length === 0" class="not-found">
+        <img src="../../../assets/nothinghere.png" />
+      </div>
     </div>
   </mat-tab>
 </mat-tab-group>
