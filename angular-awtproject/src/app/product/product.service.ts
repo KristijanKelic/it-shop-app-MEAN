@@ -16,10 +16,7 @@ const BACKEND_URL = environment.restAPI + 'product/';
 })
 export class ProductService {
   private products: Product[];
-  private productsUpdated = new Subject<{
-    products: Product[];
-    productCount: number;
-  }>();
+  private productsUpdated = new Subject<Product[]>();
 
   private formSubmitted = new Subject<boolean>();
   private isLoadingListener = new Subject<boolean>();
@@ -46,12 +43,12 @@ export class ProductService {
     return this.isLoadingListener.asObservable();
   }
 
-  getProducts(productPerPage: number, currentPage: number) {
+  getProducts() {
     this.isAuth = this.authService.getisAuthenticated();
     this.route.queryParamMap.subscribe(qParams => {
-      let queryParams = `?pageSize=${productPerPage}&page=${currentPage}`;
+      let queryParams = '?';
       if (this.isAuth) {
-        queryParams = `?pageSize=${productPerPage}&page=${currentPage}&userId=${this.authService.getUserId()}`;
+        queryParams += `userId=${this.authService.getUserId()}`;
       }
       if ((qParams as any).params.category === 'laptops') {
         queryParams += '&category=Laptop';
@@ -60,11 +57,10 @@ export class ProductService {
         queryParams += '&category=Smartphone';
       }
 
+      this.productsUpdated.next([]);
       this.isLoadingListener.next(true);
       this.http
-        .get<{ message: string; products: any[]; productCount: number }>(
-          BACKEND_URL + queryParams
-        )
+        .get<{ message: string; products: any[] }>(BACKEND_URL + queryParams)
         .pipe(
           map(productData => {
             return {
@@ -80,21 +76,16 @@ export class ProductService {
                     name: el.creator.name,
                     surname: el.creator.surname,
                     _id: el.creator._id
-                  },
-                  creatorName: el.creatorName
+                  }
                 };
-              }),
-              productCount: productData.productCount
+              })
             };
           })
         )
         .subscribe(
           result => {
             this.products = result.products;
-            this.productsUpdated.next({
-              products: [...this.products],
-              productCount: result.productCount
-            });
+            this.productsUpdated.next([...this.products]);
             this.isLoadingListener.next(false);
           },
           error => {
@@ -141,7 +132,7 @@ export class ProductService {
             duration: 2000
           });
           this.formSubmitted.next(true);
-          this.router.navigate(['/']);
+          this.router.navigate(['/auth/myproducts']);
         },
         error => {
           this.snackBar.open(error.error.message, '', {
@@ -180,6 +171,7 @@ export class ProductService {
       )
       .subscribe(
         result => {
+          this.formSubmitted.next(true);
           this.snackBar.open(result.message, '', {
             duration: 2000
           });
@@ -205,10 +197,7 @@ export class ProductService {
       .subscribe(
         result => {
           this.products = result.products;
-          this.productsUpdated.next({
-            products: [...this.products],
-            productCount: 0
-          });
+          this.productsUpdated.next([...this.products]);
         },
         error => {
           this.snackBar.open(error.error.message, '', {

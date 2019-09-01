@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 import { ProductService } from '../product.service';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Product } from '../product.model';
-import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   templateUrl: './product-list.component.html',
@@ -12,15 +11,12 @@ import { PageEvent } from '@angular/material/paginator';
 })
 export class ProductListComponent implements OnInit, OnDestroy {
   products: Product[] = [];
+  filteredProducts: Product[];
   private productsSub: Subscription;
   private authSub: Subscription;
   private isLoadingSub: Subscription;
   userIsAuth = false;
   isLoading = false;
-  totalProducts;
-  productPerPage = 2;
-  currentPage = 1;
-  pageSizeOptions = [2, 4, 6, 8];
   userId: string;
 
   constructor(
@@ -30,14 +26,14 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isLoading = true;
-    this.productService.getProducts(this.productPerPage, this.currentPage);
+    this.productService.getProducts();
     this.userId = this.authService.getUserId();
     this.productsSub = this.productService
       .getProductUpdateListener()
-      .subscribe(productData => {
+      .subscribe(products => {
         this.isLoading = false;
-        this.products = productData.products;
-        this.totalProducts = productData.productCount;
+        this.products = products;
+        this.filteredProducts = products;
       });
     this.userIsAuth = this.authService.getisAuthenticated();
     this.authSub = this.authService
@@ -57,9 +53,14 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.isLoadingSub.unsubscribe();
   }
 
-  onChangedPage(pageData: PageEvent) {
-    this.currentPage = pageData.pageIndex + 1;
-    this.productPerPage = pageData.pageSize;
-    this.productService.getProducts(this.productPerPage, this.currentPage);
+  onFilterApply(value: string) {
+    this.filteredProducts = this.products.filter(el => {
+      return (
+        el.title.toLowerCase().includes(value.trim().toLowerCase()) ||
+        el.content
+          .toLocaleLowerCase()
+          .includes(value.trim().toLocaleLowerCase())
+      );
+    });
   }
 }

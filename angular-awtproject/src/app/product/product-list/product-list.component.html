@@ -1,22 +1,25 @@
 <div class="main-grid">
-  <div class="search-grid" *ngIf="products.length > 0 && !isLoading">
+  <div class="search-grid">
     <mat-form-field>
-      <input matInput placeholder="Search" />
-      <button mat-icon-button matSuffix (click)="('')">
-        <mat-icon>search</mat-icon>
-      </button>
+      <input
+        matInput
+        placeholder="Search"
+        #searchFilter="matInput"
+        (input)="onFilterApply(searchFilter.value)"
+      />
+      <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
   </div>
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
   <div *ngIf="products.length == 0 && !isLoading">
     <h1>No products found</h1>
     <div class="not-found">
       <img src="../../../assets/nothinghere.png" />
     </div>
   </div>
-  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
   <div *ngIf="!isLoading">
     <div class="list-grid">
-      <mat-card *ngFor="let product of products" class="list-grid-item">
+      <mat-card *ngFor="let product of filteredProducts" class="list-grid-item">
         <mat-card-header>
           <mat-card-title
             style="cursor: pointer"
@@ -32,18 +35,9 @@
           </p>
         </mat-card-content>
         <mat-card-actions>
-          <strong>{{ product.price | currency: 'EUR'}}</strong>
+          <strong>{{ product.price | currency: 'EUR' }}</strong>
         </mat-card-actions>
       </mat-card>
     </div>
-  </div>
-  <div class="paginator-grid" *ngIf="products.length !== 0">
-    <mat-paginator
-      [length]="totalProducts"
-      [pageSize]="productPerPage"
-      [pageSizeOptions]="pageSizeOptions"
-      (page)="onChangedPage($event)"
-      [showFirstLastButtons]="true"
-    ></mat-paginator>
   </div>
 </div>

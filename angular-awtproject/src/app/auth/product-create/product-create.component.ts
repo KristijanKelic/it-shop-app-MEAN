@@ -49,7 +49,7 @@ export class ProductCreateComponent implements OnInit {
       content: new FormControl(null, {
         validators: [
           Validators.required,
-          Validators.maxLength(500),
+          Validators.maxLength(800),
           Validators.minLength(50)
         ]
       })

@@ -32,7 +32,7 @@ export class UserProductsComponent implements OnInit, OnDestroy {
       .getProductUpdateListener()
       .subscribe(result => {
         this.isLoading = false;
-        this.products = result.products;
+        this.products = result;
       });
   }
 

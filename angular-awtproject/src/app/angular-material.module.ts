@@ -15,12 +15,10 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
-import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   exports: [
@@ -39,12 +37,10 @@ import { MatSortModule } from '@angular/material/sort';
     MatProgressBarModule,
     MatSnackBarModule,
     MatSelectModule,
-    MatPaginatorModule,
     MatDialogModule,
     MatTooltipModule,
     MatTableModule,
-    MatTabsModule,
-    MatSortModule
+    MatTabsModule
   ]
 })
 export class AngularMaterialModule {}

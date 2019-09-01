@@ -1,15 +1,11 @@
 .main-grid {
   grid-template-areas:
     'search'
-    'list'
-    'paginator';
+    'list';
   margin: 2rem 2rem 0rem 2rem;
   display: grid;
 }
 
-.paginator-grid {
-  grid-area: 'paginator';
-}
 
 .search-grid {
   display: flex;
@@ -21,7 +17,7 @@
 .list-grid {
   display: grid;
   grid-area: 'list';
-  grid-template-columns: 48% 48%;
+  grid-template-columns: 30% 30% 30%;
   margin: 10% 0%;
   box-sizing: border-box;
   grid-column-gap: 2rem;
@@ -40,7 +36,7 @@ mat-card {
   justify-content: space-between;
 }
 
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 835px) {
   .list-grid {
     grid-template-columns: auto;
   }

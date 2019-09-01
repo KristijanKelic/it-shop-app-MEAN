@@ -14,12 +14,16 @@
     <mat-accordion multi="true">
       <mat-expansion-panel *ngFor="let product of products">
         <mat-expansion-panel-header>
-          <mat-panel-title>
-            {{ product.title | uppercase }}
-          </mat-panel-title>
-          <mat-panel-description>
-            {{ product.category }}
-          </mat-panel-description>
+          <div>
+            <mat-panel-title>
+              {{ product.title | uppercase }}
+            </mat-panel-title>
+          </div>
+          <div>
+            <mat-panel-description>
+              {{ product.category }}
+            </mat-panel-description>
+          </div>
         </mat-expansion-panel-header>
 
         <p>{{ product.content }}</p>

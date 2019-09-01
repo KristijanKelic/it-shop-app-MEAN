@@ -3,68 +3,41 @@ const Product = require('../models/product.js');
 /* this middleware fetches all products from database */
 exports.getProducts = (req, res, next) => {
   /* extracting query params to modify the query */
-  const pageSize = +req.query.pageSize;
-  const currentPage = +req.query.page;
   const userId = req.query.userId;
   const category = req.query.category;
 
-  let fetchedProducts;
-  let productQuery = Product.find().sort({ createdAt: -1 });
-
+  let productQuery;
   /* If we have userId that means that user is logged in so we will display all products
      (because category is not specified) of other users */
   if (userId && !category) {
-    productQuery = Product.find({ creator: { $ne: userId } }).sort({
+    productQuery = Product.find({
+      creator: { $ne: userId }
+    }).sort({
       createdAt: -1
     });
-  }
-  /*If user is not logged in and category is selected we display all products of matching category*/
-  if (!userId && category) {
+  } else if (!userId && category) {
+    /*If user is not logged in and category is selected we display all products of matching category*/
     productQuery = Product.find({ category: category }).sort({
       createdAt: -1
     });
-  }
-  /*If we have logged in user and category selected then we will display all products of that category
+  } else if (userId && category) {
+    /*If we have logged in user and category selected then we will display all products of that category
   that are not created by logged in user */
-  if (userId && category) {
     productQuery = Product.find({
       creator: { $ne: userId },
       category: category
     }).sort({
       createdAt: -1
     });
-  }
-  /*We will always recieve pageSize and currentPage for pagination purposes to fetch products in hops
-    and also this will return all products because user is not logged in and category is not specified */
-  if (pageSize && currentPage) {
-    productQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
+  } else {
+    productQuery = Product.find().sort({ createdAt: -1 });
   }
   productQuery
     .populate('creator')
     .then(products => {
-      fetchedProducts = products;
-      if (userId && category) {
-        return Product.countDocuments({
-          creator: { $ne: userId },
-          category: category
-        });
-      }
-      /* Counting documents so we can display max products in pagination on frontend */
-      if (!userId && category) {
-        return Product.countDocuments({ category: category });
-      }
-      if (userId && !category) {
-        return Product.countDocuments({ creator: { $ne: userId } });
-      }
-      if (!userId && !category) {
-        return Product.estimatedDocumentCount();
-      }
-    })
-    .then(count => {
       res.status(200).json({
         message: 'Products fetched successfully!',
-        products: fetchedProducts,
-        productCount: count
+        products: products
       });
     })
     .catch(err => {
@@ -90,13 +63,13 @@ exports.postProduct = (req, res, next) => {
     .save()
     .then(result => {
       res.status(201).json({
-        message: 'Post added successfully!',
+        message: 'Product created successfully!',
         product: result
       });
     })
     .catch(err => {
       res.status(500).json({
-        message: 'Creating a post failed!'
+        message: 'Creating a product failed!'
       });
     });
 };
@@ -109,16 +82,16 @@ exports.getProduct = (req, res, next) => {
     .then(product => {
       if (product) {
         res.status(200).json({
-          message: 'Post fetched successfully!',
+          message: 'Product fetched successfully!',
           product: product
         });
       } else {
-        res.status(404).json({ message: 'Post not found!' });
+        res.status(404).json({ message: 'Product not found!' });
       }
     })
     .catch(err => {
       res.status(500).json({
-        message: 'Fetching post failed!'
+        message: 'Fetching product failed!'
       });
     });
 };

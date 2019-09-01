@@ -1,4 +1,5 @@
 <div class="payment">
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
   <h5>Fill out data for payment</h5>
   <form novalidate (ngSubmit)="buy()" [formGroup]="paymentForm">
     <mat-form-field>

@@ -295,16 +295,19 @@ export class AuthService {
   }
 
   postCheckout(token: any) {
+    this.isLoadingListener.next(true);
     this.http
       .post<{ message: string }>(environment.restAPI + 'checkout', { token })
       .subscribe(
         result => {
+          this.isLoadingListener.next(false);
           this.snackBar.open(result.message, '', {
             duration: 2000
           });
           this.router.navigate(['/']);
         },
         error => {
+          this.isLoadingListener.next(false);
           this.snackBar.open(error.error.message, '', {
             duration: 2000
           });

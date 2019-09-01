@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { StripeService, Elements, Element as StripeElement } from 'ngx-stripe';
 import { AuthService } from '../auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
 
 @Component({
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.css']
 })
-export class OrderComponent implements OnInit {
+export class OrderComponent implements OnInit, OnDestroy {
   paymentForm: FormGroup;
+  isLoadingSub: Subscription;
+  isLoading = false;
 
   elements: Elements;
   card: StripeElement;
@@ -22,6 +25,10 @@ export class OrderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isLoadingSub = this.authService
+      .getIsLoadingListener()
+      .subscribe(is => (this.isLoading = is));
+
     this.paymentForm = this.fb.group({
       name: ['', [Validators.required]]
     });
@@ -62,5 +69,9 @@ export class OrderComponent implements OnInit {
         });
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.isLoadingSub.unsubscribe();
   }
 }
